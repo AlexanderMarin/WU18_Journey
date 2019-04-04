@@ -12,6 +12,11 @@ using Microsoft.EntityFrameworkCore;
 using WU18_Journey.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using WU18_Journey.Models;
+using WU18_Journey.Areas.Identity.Data;
 
 namespace WU18_Journey
 {
@@ -34,14 +39,45 @@ namespace WU18_Journey
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddDbContext<WU18_JourneyContext>(options =>
+                   options.UseSqlServer(
+                       Configuration.GetConnectionString("WU18_JourneyContextConnection")));
+
+            services.AddDefaultIdentity<WU18_JourneyUser>()
+                .AddEntityFrameworkStores<WU18_JourneyContext>();
+
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(
+            //        Configuration.GetConnectionString("WebIdentityContextConnection")));
+            //services.AddDefaultIdentity<IdentityUser>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = "domain.com",
+                    ValidAudience = "domain.com",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("mySecretKeyString"))
+                };
+            });
+
         }
+
+
+   
+
+
+
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -58,6 +94,7 @@ namespace WU18_Journey
             }
 
             app.UseHttpsRedirection();
+            app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
@@ -65,9 +102,9 @@ namespace WU18_Journey
 
             app.UseMvc(routes =>
             {
-                routes.MapRoute(
+               routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                   template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
