@@ -1,0 +1,95 @@
+﻿
+
+    <br />
+    <br />
+    <br />
+    <div class="container">
+
+        <center> <h3><b>Skapa ny resa</b></h3></center>
+
+        <form>
+            <!-- Choose Car -->
+            <div class="dropdown">
+                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    (Programmera in standardbil)
+                </button>
+                <small id="emailHelp" class="form-text text-muted">Välj bil för din resa.</small>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Bil 1</a>
+                    <a class="dropdown-item" href="#">Bil 2</a>
+                </div>
+            </div>
+
+            <br />
+
+            <!-- Choose Car End -->
+            <h4>Ange start datum</h4>
+            <input type="date" ng-model="dateStartPicker" name="name" value="" />
+          
+            <br />
+
+            <h4>Ange mätarställningar</h4>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Mätarställning start</label>
+                <input ng-model="RoadtripMilesStart" type="number" class="form-control" placeholder="Mätarställning start">
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Mätarställning ankomst</label>
+                <input ng-model="RoadtripMilesStop" type="number" class="form-control" placeholder="Mätarställning ankomst">
+            </div>
+
+            <br />
+
+            <h4>Ange reslängd</h4>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Reslängd</label>
+                <input ng-model="RoadtripMilesStop - RoadtripMilesStart" type="number" class="form-control" >
+            </div>
+
+            <br />
+            <h4>Ange adress</h4>
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Startadress</label>
+                <input ng-model="StartDestination" type="text" class="form-control" placeholder="Ange startadress">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Destinationsadress</label>
+                <input ng-model="StopDestination" type="text" class="form-control" placeholder="Ange destinationsadress">
+            </div>
+
+            <br />
+
+            <h4>Ange ärende</h4>
+            <div class="form-group">
+                <label for="comment">Ärende</label>
+                <textarea ng-model="Matter" class="form-control" rows="5" placeholder="Ange ditt ärende"></textarea>
+            </div>
+
+            <br />
+            <h4>Anteckningar</h4>
+            <div class="form-group">
+                <label for="comment">Anteckningar</label>
+                <textarea ng-model="Note" class="form-control" rows="5" placeholder="Anteckningar"></textarea>
+            </div>
+
+
+            <br />
+
+            <div>
+                <center>
+                    <button ng-click="createRoadtripJsAction()" type="submit" class="btn btn-primary btn-block">Spara</button>
+
+                </center>
+            </div>
+
+        </form>
+
+
+
+    </div>
+
+    <br />
+

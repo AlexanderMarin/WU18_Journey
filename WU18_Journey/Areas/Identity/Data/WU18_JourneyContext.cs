@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WU18_Journey.Areas.Identity.Data;
+using WU18_Journey.Models;
 
 namespace WU18_Journey.Models
 {
@@ -23,5 +24,9 @@ namespace WU18_Journey.Models
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+
+        public DbSet<WU18_Journey.Models.Vehicle> Vehicle { get; set; }
+       public DbSet<WU18_Journey.Models.Roadtrip> Roadtrip { get; set; }
+       public DbSet<WU18_Journey.Models.Company> Company { get; set; }
     }
 }

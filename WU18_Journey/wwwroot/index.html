@@ -1,10 +1,72 @@
 ﻿<!DOCTYPE html>
-<html>
+<html ng-app="loginAngularAppPreDashboard">
 <head>
     <meta charset="utf-8" />
     <title></title>
+
+
+    <script src="lib/jquery/dist/jquery.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link href="css/site.css" rel="stylesheet" />
+
+
+    <script src="lib/angular.js/angular.js"></script>
+    <script src="lib/angular.js/angular-route.js"></script>
+    <script src="lib/angular.js/angular-cookies.js"></script>
+    <script src="js/loginAngularAppPreDashboard.js"></script>
+    <script src="js/loginControllerPreDashboard.js"></script>
 </head>
-<body>
-    funkar
+<body ng-controller="journeyLoginController">
+
+
+    <div class="container ">
+        <br />
+        <br />
+        <center> <h1><b class="font-weight-normal">Körjournalen</b></h1></center>
+        <hr />
+        <br />
+        <br />
+        <center> <h2><b class="font-weight-normal">Logga in</b></h2></center>
+        <br />
+
+        <form>
+            <div class="form-group">
+                <label for="exampleInputEmail1">E-post address</label>
+                <input ng-model="loginEmail" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ange din E-post address">
+            </div>
+            <hr />
+            <div class="form-group">
+                <label for="exampleInputPassword1">Lösenord</label>
+                <input ng-model="loginPassword" type="password" class="form-control" id="exampleInputPassword1" placeholder="Lösenord">
+            </div>
+            <hr />
+
+            <a href="#">Glömt lösenordet?</a>
+
+            <br />
+            <br />
+
+            <!-- Ta bort länk inifrån knappen och ersätt med angular js funktion för föbättrad design -->
+            <button type="submit" ng-click="ClickLoginTest()" class="btn btn-primary btn-block">
+                Logga in
+
+            </button>
+
+            <br />
+
+            <div>
+                <center>
+                    <p class="font-weight-light">Har du inget konto?</p>
+                    <a href="#!/register/">Skapa konto</a>
+                </center>
+            </div>
+
+        </form>
+
+
+    </div>
+
 </body>
 </html>

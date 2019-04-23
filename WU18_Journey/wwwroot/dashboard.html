@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html ng-app="journeyApp">
+<head>
+    <meta charset="utf-8" />
+    <title>Roadtrip Design</title>
+
+    <!-- Bootstrap -->
+    <script src="lib/jquery/dist/jquery.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--   <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet"-->
+    <!-- Egen CSS -->
+    <link href="css/site.css" rel="stylesheet" />
+
+    <!--Angular JS -->
+    <script src="lib/angular.js/angular.js"></script>
+    <script src="lib/angular.js/angular-route.js"></script>
+    <script src="lib/angular.js/angular-cookies.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controller.js"></script>
+
+</head>
+<body ng-controller="journeyController">
+    <nav class="navbar navbar-expand-lg navbar-light bg-info">
+        <a class="navbar-brand" href="#">Körjournalen</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="#!/createNewRoadtrip/" class="nav-link">Skapa ny resa + </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="dashboard.html">Pågående resor</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <!-- Knappen ska inte ha länk. dropdownlänkarna ska ha länk, för tilfället fungerar inte JS, detta är för test -->
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Hantera fordon
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#!/addVehicles/">Hantera dina fordon</a>
+                        <hr />
+                        <a class="dropdown-item" href="#!/manageVehicles/">Lägg till fordon +</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Rapport</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#!/support/">Support</a>
+                </li>
+
+
+
+            </ul>
+        </div>
+    </nav>
+    <br />
+    <center>
+        <div>{{loggedInUser.Email}}</div>
+    </center>
+
+    <!--    ng view under navbaren då den ska va mde hela tiden. Skapa ny resa knappen kan va bra att ha i slutet på varje grej man gör.  -->
+    <ng-view></ng-view>
+
+
+    <br />
+
+
+    <div class="container">
+        <!-- Ta bort länk inifrån knappen och ersätt med angular js funktion för föbättrad design -->
+
+        <a href="#!/createNewRoadtrip/">
+            <button type="button" class="btn btn-info btn-block"> Skapa ny resa +</button>
+        </a>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="container">
+
+        <center><h3><b>Pågående resor</b></h3></center>
+        <br />
+
+
+        <div class="row">
+            <div class="col-4">
+                <div class="list-group" id="list-tab" role="tablist">
+                    <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Jönköpingsvägen 15, Värnamo, 19 km</a>
+                    <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Nordgatan 3, Växjö, 35 km</a>
+                    <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Sjövägen 5, Värnamo</a>
+                    <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Backgatan 8, Alvesta</a>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list"><button class="btn btn-warning">Komplettera resa för ABC123 Volvo</button></div>
+                    <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">EDF456 BMW</div>
+                    <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">Ingen data tillgänglig.</div>
+                    <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">Ingen data tillgänglig.</div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+
+</body>
+</html>

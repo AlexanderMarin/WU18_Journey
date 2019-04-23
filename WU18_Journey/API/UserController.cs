@@ -9,30 +9,38 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using WU18_Journey.Areas.Identity.Data;
+using WU18_Journey.Models;
 
 namespace WU18_Journey.API
 {
     [Route("api/[controller]")]
     [ApiController]
+    // [Authorize]
     public class UserController : ControllerBase
     {
 
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<WU18_JourneyUser> _userManager;
+        private readonly SignInManager<WU18_JourneyUser> _signInManager;
+        private readonly WU18_JourneyContext _context;
 
         public UserController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<WU18_JourneyUser> userManager,
+            SignInManager<WU18_JourneyUser> signInManager,
+            WU18_JourneyContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         // POST: api/User
         [HttpPost]
         [Route("/token")]
-        [Authorize]
+        // [AllowAnonymous]
+       // [Authorize]
         public async Task<IActionResult> LoginAsync([FromBody] Login login)
         {
             if (!ModelState.IsValid)
@@ -74,14 +82,30 @@ namespace WU18_Journey.API
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-
-
-
         // GET: api/User
         [HttpGet]
-        public IEnumerable<string> Get()
+        [Authorize]
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+
+            //  var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var email = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var user = _context.Users
+               .Where(x => x.Email == email)
+               .Include(x => x.AvailableVehicles)
+               .FirstOrDefault();
+
+          //  var user = await _userManager.FindByEmailAsync(userId);
+
+            var obj = new LoggedInUser();
+            obj.email = user.Email;
+            // obj.defaultvehicle = user.DefaultVehicle;
+            obj.AvailableVehicles = user.AvailableVehicles;
+
+
+            return Ok(obj);
         }
 
         // GET: api/User/5

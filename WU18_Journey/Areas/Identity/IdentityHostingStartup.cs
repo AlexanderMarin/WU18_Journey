@@ -18,6 +18,6 @@ namespace WU18_Journey.Areas.Identity
             builder.ConfigureServices((context, services) => {
                
             });
-        } // Ta bort?
+        } 
     }
 }
