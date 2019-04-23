@@ -27,8 +27,13 @@ app.config(function ($routeProvider) {
             controller: 'getRoadtripController'
         })
 
-        .when("/dashboard/", {
-            templateUrl: '/dashboard.html',
+        .when("/completeRoadtrip/", {
+            templateUrl: '/templates/completeRoadtrip.html',
+            controller: 'completeRoadtripController'
+        })
+
+        .when("/ongoingRoadtrips/", {
+            templateUrl: '/templates/ongoingRoadtrips.html',
             controller: 'journeyController'
         })
         .when("/support/", {

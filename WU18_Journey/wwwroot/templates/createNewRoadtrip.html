@@ -26,7 +26,7 @@
             <!-- Choose Car End -->
             <h4>Ange start datum</h4>
             <input type="date" ng-model="dateStartPicker" name="name" value="" />
-          
+
             <br />
 
             <h4>Ange mätarställningar</h4>
@@ -45,7 +45,7 @@
             <h4>Ange reslängd</h4>
             <div class="form-group">
                 <label for="exampleInputEmail1">Reslängd</label>
-                <input ng-model="RoadtripMilesStop - RoadtripMilesStart" type="number" class="form-control" >
+                <input ng-model="RoadtripMilesStop - RoadtripMilesStart" type="number" class="form-control">
             </div>
 
             <br />
@@ -53,8 +53,12 @@
 
             <div class="form-group">
                 <label for="exampleInputEmail1">Startadress</label>
+                <br />
+                {{myAdress}}
+
                 <input ng-model="StartDestination" type="text" class="form-control" placeholder="Ange startadress">
             </div>
+            <button class="btn btn-info btn-sm" ng-click="findAdress()">Hitta automatiskt min adress</button>
             <div class="form-group">
                 <label for="exampleInputPassword1">Destinationsadress</label>
                 <input ng-model="StopDestination" type="text" class="form-control" placeholder="Ange destinationsadress">
@@ -87,7 +91,9 @@
 
         </form>
 
-
+        
+      
+        
 
     </div>
 

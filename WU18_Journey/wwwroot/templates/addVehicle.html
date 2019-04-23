@@ -1,52 +1,43 @@
 ﻿
 
 
+
+
+<br />
+<br />
+
+<div class="container">
+
+    <center><h3><b>Lägg till fordon</b></h3></center>
+
     <br />
     <br />
 
-    <div class="container">
 
-        <center><h3><b>Hantera Fordon   </b></h3></center>
+    <div class="row">
 
-        <br />
-        <br />
-
-
-        <div class="row">
-
-
-            <div class=" col-sm-12 col-lg-12">
-                <div class="list-group" id="list-tab" role="tablist">
-                    
-
-                    <ul>
-                        <li ng-repeat="Vehicle in getAvailableVehicles">
-                            <div class="list-group-item list-group-item-action" id="{{'carId'+$index}}" href="#list-profile" role="tab" aria-controls="profile"> <b>{{Vehicle.make}}</b> | {{Vehicle.plateNumber}} 
-                                <div class="float-right">
-                                    <button ng-click="deleteVehicle(Vehicle)" class="btn btn-sm btn-danger"> - Ta bort fordon</button> 
-                                    <button ng-if="Vehicle.active" ng-click="setVehicleInActive(Vehicle)" class="btn btn-sm btn-info"> Inaktivera</button>
-                                    <button ng-if="!Vehicle.active" ng-click="setVehicleActive(Vehicle)" class="btn btn-sm btn-info"> Aktivera</button>
-                                </div>
-                           
-                            
-                            </div>
-                            <br />
-                        </li>
-
-                    </ul>
+        <div class="col-lg-12">
+            <h4>Lägg till fordon</h4>
+            <div class="row">
+                <div class="col-lg-6">
+                    <label for="comment">Nummerplåt</label>
+                    <input ng-model="VehiclePlateNumber" type="text" class="form-control" placeholder="Ange nummerplåt">
+                </div>
+                <div class="col-lg-6">
+                    <label for="comment">Märke</label>
+                    <input ng-model="VehicleMake" type="text" class="form-control" placeholder="Ange märke">
                 </div>
                 <br />
                 <br />
-
-
+                <br />
+                <br />
+                <button ng-click="addNewVehicleJsAction()" class="btn btn-info btn-block" type="submit">Lägg till fordon +</button>
             </div>
-         
         </div>
-
 
     </div>
 
 
-
+</div>
 
 

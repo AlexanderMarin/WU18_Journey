@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -29,23 +31,39 @@ namespace WU18_Journey.API
 
         // GET: api/Roadtrip
         [HttpGet]
-        public IEnumerable<string> Get()
+        [Authorize]
+        public async Task<IActionResult> GetRoadtrips()
         {
-            return new string[] { "value1", "value2" };
+            var email = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var user = _context.Users
+               .Where(x => x.Email == email)
+               .Include(x => x.UserRoadtrips)
+               .FirstOrDefault();
+
+
+            var obj = new LoggedInUser();
+            obj.email = user.Email;
+            // obj.defaultvehicle = user.DefaultVehicle;
+            obj.AvailableVehicles = user.AvailableVehicles;
+
+
+            return Ok(user.UserRoadtrips.ToList());
         }
 
         // GET: api/Roadtrip/5
-        [HttpGet]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        //[HttpGet]
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
 
         // POST: api/Roadtrip
 
 
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Post([FromBody] Roadtrip roadtrip)
 
         {

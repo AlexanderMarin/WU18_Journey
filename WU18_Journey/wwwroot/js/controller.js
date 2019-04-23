@@ -8,37 +8,84 @@
 
     console.log("$rootScope.loggedInUser ", $rootScope.loggedInUser);
 
-    //var getVehiclesUrl = "/api/Vehicles/";
+    var getRoadtripsUrl = "/api/Roadtrip/";
 
-    //$http.get(getVehiclesUrl,{ headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken }}).then(function successCallback(response) {
+    $http.get(getRoadtripsUrl, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
 
-    //        console.log("get vehicles response: ", response);
+        console.log("successfullCallback response GET ROADTPPA: ", response);
 
-    //    $scope.getAvailableVehicles = response.data.availableVehicles;
+        $scope.unfinishedRoadtrips = response.data;
+        
 
 
 
 
-    //        // If error --------------------------------------------------------------------------------------------------
-    //    }, function errorCallback(response) {
+        // If error --------------------------------------------------------------------------------------------------
+    }, function errorCallback(response) {
 
-    //        console.log("get vehicles ERROR response: ", response);
+        console.log("get roadtrips ERROR response: ", response);
 
-    //    });
+        });
 
+    $scope.completeRoadtripJsFunction = function (roadtrip) {
+        console.log("Completeing Roadtrip: ", roadtrip);
+
+        console.log("Car to edit: ", roadtrip)
+    }
 
   
-
-     
-
-   
-
-   
 
     
 });
 
 app.controller("getRoadtripController", function ($scope, $http, $rootScope, $window, $cookies) {
+
+
+    // GOOGLE GEOLOCATION
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function
+            (position) {
+
+            $scope.latitude = position.coords.latitude;
+            $scope.longitude = position.coords.longitude;
+            $scope.$apply();
+
+
+            console.log(position);
+
+        }, function () {
+            $scope.longitude = 13.738671;
+            $scope.latitude = 57.356136;
+        });
+    } else {
+        $scope.longitude = 13.738671;
+        $scope.latitude = 57.356136;
+    }
+
+    $scope.findAdress = function () {
+
+        var geocoder = new google.maps.Geocoder;
+
+        var latlng = {
+            lat: parseFloat($scope.latitude),
+            lng: parseFloat($scope.longitude)
+        }
+
+        geocoder.geocode({ 'location': latlng }, function (result, status) {
+
+            console.log(status);
+            console.log(result);
+
+            if (result[0]) {
+                $scope.myAdress = result[0].formatted_address;
+                $scope.$apply();
+            }
+
+        });
+
+    };
+
+
 
     $scope.RoadtripMilesStart = 0;
     $scope.RoadtripMilesStop = 0;
@@ -65,23 +112,34 @@ app.controller("getRoadtripController", function ($scope, $http, $rootScope, $wi
         var UserId = $scope.userId;
 
 
+        if (StartDestination == undefined) {
+            StartDestination = $scope.myAdress;
+        }
+
+        if (StartDestination == "") {
+            StartDestination = $scope.myAdress;
+        }
+
+        if (StartDestination == undefined) {
+            StartDestination = $scope.StartDestination;
+        }
+        console.log("START: ", StartDestination);
+
         var postRoadtripObject = {
             Date: RoadtripDate,
             RoadtripMilesStart: RoadtripMilesStart,
             RoadtripMilesStop: RoadtripMilesStop,
-            TravelDistance: TravelDistance,
             StartDestination: StartDestination,
             StopDestination: StopDestination,
             Matter: Matter,
             Note: Note,
-            UserId: UserId
         };
 
         console.log("postRoadtripObject: ", postRoadtripObject);
 
-        var postRoadtripUrl = "/api/Roadtrips";
+        var postRoadtripUrl = "/api/Roadtrip";
 
-        $http.post(postRoadtripUrl, postRoadtripObject).then(function successCallback(response) {
+        $http.post(postRoadtripUrl, postRoadtripObject, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
 
             console.log("SuccessfullCallback response: ", response);
 
@@ -95,15 +153,21 @@ app.controller("getRoadtripController", function ($scope, $http, $rootScope, $wi
 
 
     }
+
+
+
+
+
+    
 });
 
-app.controller("addVehiclesController", function ($scope, $http, $rootScope, $window, $cookies) {
+app.controller("manageVehiclesController", function ($scope, $http, $rootScope, $window, $cookies) {
 
 
 
 
 
-    // On login load roadtrips
+  
 
     var getVehiclesUrl = "/api/Vehicles/";
 
@@ -123,9 +187,27 @@ app.controller("addVehiclesController", function ($scope, $http, $rootScope, $wi
 
         });
 
+    $scope.deleteVehicle = function (Vehicle) {
+        console.log("Deleting : ", Vehicle);
+    }
 
 
-    // Post Vehicle ------------------------------ --------------------------------- -------------------------- ---------------------- -------------------
+    $scope.setVehicleInActive = function (Vehicle) {
+        console.log("Setting vehicle Inactive: ", Vehicle);
+    }
+
+
+    $scope.setVehicleActive = function (Vehicle) {
+        console.log("Setting vehicle Active: ", Vehicle);
+    }
+
+   
+   
+});
+
+app.controller("addVehiclesController", function ($scope, $http, $rootScope, $window, $cookies) {
+    
+
     $scope.addNewVehicleJsAction = function () {
 
 
@@ -196,50 +278,18 @@ app.controller("addVehiclesController", function ($scope, $http, $rootScope, $wi
 
         });
     }
+
+
+
+
+ 
 });
-
-app.controller("manageVehiclesController", function ($scope, $http, $rootScope, $window, $cookies) {
-
+app.controller("completeRoadtripController", function ($scope, $http, $rootScope, $window, $cookies) {
 
 
 
 
-    // On login load roadtrips
-
-    var getVehiclesUrl = "/api/Vehicles/";
-
-    $http.get(getVehiclesUrl, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
-
-        console.log("get vehicles response: ", response);
-
-        $scope.getAvailableVehicles = response.data.availableVehicles;
-
-
-
-
-        // If error --------------------------------------------------------------------------------------------------
-    }, function errorCallback(response) {
-
-        console.log("get vehicles ERROR response: ", response);
-
-        });
-
-
-    $scope.deleteVehicle = function (Vehicle) {
-        console.log("Deleting : ", Vehicle);
-    }
-
-
-    $scope.setVehicleInActive = function (Vehicle) {
-        console.log("Setting vehicle Inactive: ", Vehicle);
-    }
-
-
-    $scope.setVehicleActive = function (Vehicle) {
-        console.log("Setting vehicle Active: ", Vehicle);
-    }
 });
-
 app.controller("supportController", function ($scope, $http, $rootScope, $window, $cookies) {
 
 

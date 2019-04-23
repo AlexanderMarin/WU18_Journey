@@ -19,6 +19,9 @@
     <script src="js/app.js"></script>
     <script src="js/controller.js"></script>
 
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDckHHiC7vxIIBg3NYH1pr9R2ATloLzV-w" async defer></script>
+
+
 </head>
 <body ng-controller="journeyController">
     <nav class="navbar navbar-expand-lg navbar-light bg-info">
@@ -33,7 +36,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="dashboard.html">Pågående resor</a>
+                    <a class="nav-link" href="#!/ongoingRoadtrips/">Pågående resor</a>
                 </li>
                 <li class="nav-item dropdown">
                     <!-- Knappen ska inte ha länk. dropdownlänkarna ska ha länk, för tilfället fungerar inte JS, detta är för test -->
@@ -41,9 +44,9 @@
                         Hantera fordon
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#!/addVehicles/">Hantera dina fordon</a>
+                        <a class="dropdown-item" href="#!/manageVehicles/">Hantera dina fordon</a>
                         <hr />
-                        <a class="dropdown-item" href="#!/manageVehicles/">Lägg till fordon +</a>
+                        <a class="dropdown-item" href="#!/addVehicles/">Lägg till fordon +</a>
                     </div>
                 </li>
                 <li class="nav-item">
@@ -64,10 +67,11 @@
     </center>
 
     <!--    ng view under navbaren då den ska va mde hela tiden. Skapa ny resa knappen kan va bra att ha i slutet på varje grej man gör.  -->
-    <ng-view></ng-view>
 
 
     <br />
+
+    <ng-view></ng-view>
 
 
     <div class="container">
@@ -81,34 +85,9 @@
     <br />
     <br />
 
-    <div class="container">
-
-        <center><h3><b>Pågående resor</b></h3></center>
-        <br />
+    
 
 
-        <div class="row">
-            <div class="col-4">
-                <div class="list-group" id="list-tab" role="tablist">
-                    <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Jönköpingsvägen 15, Värnamo, 19 km</a>
-                    <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Nordgatan 3, Växjö, 35 km</a>
-                    <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Sjövägen 5, Värnamo</a>
-                    <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Backgatan 8, Alvesta</a>
-                </div>
-            </div>
-            <div class="col-8">
-                <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list"><button class="btn btn-warning">Komplettera resa för ABC123 Volvo</button></div>
-                    <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">EDF456 BMW</div>
-                    <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">Ingen data tillgänglig.</div>
-                    <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">Ingen data tillgänglig.</div>
-                </div>
-            </div>
-        </div>
-
-
-
-    </div>
 
 
 

@@ -28,6 +28,12 @@ li {
 .chatbox{
 
 }
+.black-link-text-own a{
+    color:black;
+}
+.white-link-text-own a {
+    color: white;
+}
 .form-control {
     border: 0px solid #ced4da;
     border-top-color: rgb(206, 212, 218);

@@ -1,0 +1,49 @@
+﻿
+    <div class="container">
+
+        <center><h3><b>Pågående resor</b></h3></center>
+
+        <br />
+        <br />
+
+
+        <div class="row">
+
+
+            <div class=" col-sm-12 col-lg-12">
+                <div class="list-group" id="list-tab" role="tablist">
+
+
+                    <ul>
+                        <li ng-repeat="roadtrip in unfinishedRoadtrips">
+                            <div class="list-group-item list-group-item-action" id="{{'carId'+$index}}" href="#list-profile" role="tab" aria-controls="profile">
+                                <div class="float-right">
+                                    <a href="#!/completeRoadtrip/">  <button ng-click="completeRoadtripJsFunction(roadtrip)" class="btn btn-sm btn-warning black-link-text-own">Komplettera resa</button></a>
+                                </div>
+                                <b>{{roadtrip.matter}}</b> | {{roadtrip.stopDestination}}
+                                <br />
+
+                                {{roadtrip.startDestination}} till {{roadtrip.stopDestination}}
+
+
+
+
+                            </div>
+                            <br />
+
+                        </li>
+
+                    </ul>
+                </div>
+                <br />
+                <br />
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
