@@ -1,8 +1,10 @@
 ﻿loginAngularPreDashboard.controller("journeyLoginController", function ($scope, $http, $rootScope, $window, $cookies) {
 
-   
 
-    $rootScope.loggedInUser = JSON.parse($cookies.get("loggedInUser"));
+        var cookie = $cookies.get("loggedInUser");
+        if (cookie) {
+            $rootScope.loggedInUser = JSON.parse(cookie);
+        }
 
    
 
@@ -87,19 +89,20 @@
             $http.get('/api/User', { headers: { 'Authorization': 'Bearer ' + $rootScope.token } }).then(function (response) {
                 var responseFromApi = response;
                 console.log('token: ', responseFromApi);
-
                 let loggedInUser = {};
+
                 loggedInUser.Email = responseFromApi.data.email;
               //  loggedInUser.Availablevehicles = responseFromApi.data.availableVehicles;
                 loggedInUser.CookieWithToken = $rootScope.token;
+
+               
+             //  $cookies.put("loggedInUser", JSON.stringify(loggedInUser));
+
 
                 var now = new Date(),
                     // this will set the expiration to 12 months
                     exp = new Date(now.getFullYear() + 1, now.getMonth(), now.getDate());
 
-             //  $cookies.put("loggedInUser", JSON.stringify(loggedInUser));
-
-                
 
                 $cookies.put("loggedInUser", JSON.stringify(loggedInUser), {
                     expires: exp

@@ -55,6 +55,10 @@ namespace WU18_Journey
                 .AddJsonOptions(options => { options.SerializerSettings.ReferenceLoopHandling
                     = Newtonsoft.Json.ReferenceLoopHandling.Ignore; });
 
+
+            services.AddSignalR();
+
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -73,7 +77,7 @@ namespace WU18_Journey
         }
 
 
-   
+
 
 
 
@@ -103,9 +107,14 @@ namespace WU18_Journey
 
             app.UseMvc(routes =>
             {
-               routes.MapRoute(
-                    name: "default",
-                   template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute(
+                     name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            app.UseSignalR(routes =>
+            { 
+            routes.MapHub<ChatHub>("/chatHub");
             });
         }
     }
