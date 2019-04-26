@@ -22,8 +22,14 @@ body {
     border: 1px solid #ced4da;
     border-radius: 7px;
 }
+.dropdownPaddingOwnCss{
+    padding: 7px;
+}
+.dropdownSelectableEffectOwnCss a:hover{
+    background-color: blue;
+}
 li {
-    list-style:none;
+    list-style: none;
 }
 .chatbox{
 
@@ -31,8 +37,8 @@ li {
 .black-link-text-own a{
     color:black;
 }
-.white-link-text-own a {
-    color: white;
+.blue-link-text-own {
+    color: blue;
 }
 .form-control {
     border: 0px solid #ced4da;

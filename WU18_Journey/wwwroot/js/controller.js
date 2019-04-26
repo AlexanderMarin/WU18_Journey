@@ -8,14 +8,18 @@
 
     console.log("$rootScope.loggedInUser ", $rootScope.loggedInUser);
 
+    // GETTING_ ROADTRIPS ON LOAD
+    // FIX FILTER ONGOING ROADTRIPS
     var getRoadtripsUrl = "/api/Roadtrip/";
 
     $http.get(getRoadtripsUrl, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
 
         console.log("successfullCallback response GET ROADTPPA: ", response);
 
+
+
         $scope.unfinishedRoadtrips = response.data;
-        
+
 
 
 
@@ -25,13 +29,42 @@
 
         console.log("get roadtrips ERROR response: ", response);
 
-        });
+    });
 
     $scope.completeRoadtripJsFunction = function (roadtrip) {
         console.log("Completeing Roadtrip: ", roadtrip);
+        var RoadtripId = roadtrip.roadtripId;
+        console.log("RoadtripID: ", RoadtripId);
+        
+        var getRoadtripToCompleteByIdUrl = "api/Roadtrip/" + RoadtripId;
 
-        console.log("Car to edit: ", roadtrip)
-    }
+        $http.get(getRoadtripToCompleteByIdUrl, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
+
+            console.log("SuccessfullCallback getRoadtripToCompleteByIdUrl ", response);
+
+
+            $rootScope.roadtripDate = response.data.date;
+            console.log($scope.roadtripDate);
+            $rootScope.roadtripCarMake = response.data.vehicleMake;
+            console.log($scope.roadtripCarMake);
+
+           $rootScope.roadtripCarNumberPlate = response.data.vehiclePlateNumber;
+            console.log($scope.roadtripCarNumberPlate);
+
+
+
+            // If error --------------------------------------------------------------------------------------------------
+        }, function errorCallback(response) {
+
+            console.log("errorCallback response getRoadtripToCompleteByIdUrl: " + response);
+
+        });
+
+
+    };
+
+        
+    
 
   
 
@@ -86,30 +119,35 @@ app.controller("getRoadtripController", function ($scope, $http, $rootScope, $wi
     };
 
 
+    //DROPDOWN CAR SELECTION
+
+   
+
+    $scope.selectCarForRoadtrip = function (Vehicle) {
+
+        $scope.dropdownText = Vehicle.make + " " + Vehicle.plateNumber;
+        $rootScope.selectedVehicleMake = Vehicle.make;
+        $rootScope.selectedVehiclePlateNumber = Vehicle.plateNumber;
+        
+        
+    }
+    
 
     $scope.RoadtripMilesStart = 0;
     $scope.RoadtripMilesStop = 0;
-    console.log("Hej");
 
     $scope.createRoadtripJsAction = function () {
-
-        console.log("Function Activated");
-
-        // Input Fields through ng-model
+        var selectedVehicleMake = $rootScope.selectedVehicleMake;
+        var selectedVehiclePlateNumber = $rootScope.selectedVehiclePlateNumber;
+        
         var RoadtripDate = $scope.dateStartPicker;
-
         var RoadtripMilesStart = $scope.RoadtripMilesStart;
         var RoadtripMilesStop = $scope.RoadtripMilesStop;
-
         var TravelDistance = $scope.TravelDistance;
-
         var StartDestination = $scope.StartDestination;
         var StopDestination = $scope.StopDestination;
-
         var Matter = $scope.Matter;
         var Note = $scope.Note;
-
-        var UserId = $scope.userId;
 
 
         if (StartDestination == undefined) {
@@ -123,15 +161,25 @@ app.controller("getRoadtripController", function ($scope, $http, $rootScope, $wi
         if (StartDestination == undefined) {
             StartDestination = $scope.StartDestination;
         }
-        console.log("START: ", StartDestination);
+
+        if (RoadtripMilesStart == 0 || RoadtripMilesStop == 0 || StartDestination == null || StopDestination == null || Matter == null || Note == null) {
+            var ongoingRoadtripTrueOrFalse = false;
+        }
+        else {
+            var ongoingRoadtripTrueOrFalse = true;
+        }
+
 
         var postRoadtripObject = {
+            VehicleMake: selectedVehicleMake,
+            VehiclePlateNumber: selectedVehiclePlateNumber,
             Date: RoadtripDate,
             RoadtripMilesStart: RoadtripMilesStart,
             RoadtripMilesStop: RoadtripMilesStop,
             StartDestination: StartDestination,
             StopDestination: StopDestination,
             Matter: Matter,
+            ongoingRoadtrip: ongoingRoadtripTrueOrFalse,
             Note: Note,
         };
 
@@ -155,29 +203,51 @@ app.controller("getRoadtripController", function ($scope, $http, $rootScope, $wi
     }
 
 
+    // Get Vehicles In Dropdown
+    var getVehiclesUrl = "/api/Vehicles/";
 
+    $rootScope.defaultVehicleForDropdown = "";
+
+    let standardVehicleForDropdown = "";
+
+    $http.get(getVehiclesUrl, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
+
+        console.log("get vehicles response: ", response);
+        $scope.getAvailableVehicles = response.data.availableVehicles;
+
+
+
+       // FRÅGA LINUS H_UR MAN FILTRERAR STANDARDBIL
+
+        // If error --------------------------------------------------------------------------------------------------
+    }, function errorCallback(response) {
+
+        console.log("get vehicles ERROR response: ", response);
+
+    });
+
+    
+    $scope.dropdownText = "bilen";
+    $scope.dropdownText = "Välj bil för din resa";
 
 
     
 });
 
 app.controller("manageVehiclesController", function ($scope, $http, $rootScope, $window, $cookies) {
-
-
-
-
-
-  
-
+//-----------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------
+    //--------------------------------ON PAGE LOAD-------------------------------------------
+    //-----------------------------------------------------------------------------------------
     var getVehiclesUrl = "/api/Vehicles/";
 
     $http.get(getVehiclesUrl, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
 
         console.log("get vehicles response: ", response);
-
         $scope.getAvailableVehicles = response.data.availableVehicles;
+        
 
-
+        
 
 
         // If error --------------------------------------------------------------------------------------------------
@@ -186,21 +256,146 @@ app.controller("manageVehiclesController", function ($scope, $http, $rootScope, 
         console.log("get vehicles ERROR response: ", response);
 
         });
+    //-----------------------------------------------------------------------------------------
+    //-------------------------------DELETE VEHICLE----------------------------------------------
+    //-----------------------------------------------------------------------------------------
 
     $scope.deleteVehicle = function (Vehicle) {
         console.log("Deleting : ", Vehicle);
+
+
+        var deleteVehicleId = Vehicle.vehicleId;
+        console.log("DeletevehicleID: ", deleteVehicleUrl);
+
+
+        var deleteVehicleUrl = "/api/Vehicles/" + deleteVehicleId;
+
+        $http.delete(deleteVehicleUrl, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
+
+            console.log("SuccessfullCallback delete vehilcle ", response);
+
+            
+
+            // If error --------------------------------------------------------------------------------------------------
+        }, function errorCallback(response) {
+
+            console.log("errorCallback response delete vehilcle: " + response);
+
+        });
+
+        
+    }
+
+    //-----------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------
+
+    
+
+
+    $scope.setVehicleActive = function (Vehicle) {
+        console.log("Setting vehicle Inactive: ", Vehicle);
+
+
+        var putVehicleId = Vehicle.vehicleId;
+        console.log("put Vehicle Id: ", putVehicleId);
+
+
+        var putVehicleUrl = "/api/Vehicles/" + putVehicleId;
+
+
+       //var putFalse = "false";
+       // var vehicleSetInactiveObject = {
+       //     active: putFalse
+       // }
+        Vehicle.active = true;
+
+
+
+        $http.put(putVehicleUrl, Vehicle, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
+
+            console.log("SuccessfullCallback put vehilcle ", response);
+
+
+
+            // If error --------------------------------------------------------------------------------------------------
+        }, function errorCallback(response) {
+
+            console.log("errorCallback response put vehilcle: " + response);
+
+        });
+
+
     }
 
 
     $scope.setVehicleInActive = function (Vehicle) {
-        console.log("Setting vehicle Inactive: ", Vehicle);
+        console.log("Setting vehicle active: ", Vehicle);
+
+
+        var putVehicleId = Vehicle.vehicleId;
+        console.log("put Vehicle Id: ", putVehicleId);
+
+
+        var putVehicleUrl = "/api/Vehicles/" + putVehicleId;
+
+
+        //var putFalse = "false";
+        // var vehicleSetInactiveObject = {
+        //     active: putFalse
+        // }
+        Vehicle.active = false;
+
+
+
+        $http.put(putVehicleUrl, Vehicle, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
+
+            console.log("SuccessfullCallback put vehilcle ", response);
+
+
+
+            // If error --------------------------------------------------------------------------------------------------
+        }, function errorCallback(response) {
+
+            console.log("errorCallback response put vehilcle: " + response);
+
+        });
     }
 
+    $scope.setVehicleStandard = function (Vehicle) {
+        console.log("Setting vehicle standard: ", Vehicle);
 
-    $scope.setVehicleActive = function (Vehicle) {
-        console.log("Setting vehicle Active: ", Vehicle);
+
+        var putVehicleId = Vehicle.vehicleId;
+        console.log("put Vehicle standard Id: ", putVehicleId);
+
+
+        var putVehicleUrl = "/api/Vehicles/" + putVehicleId;
+
+
+        //var putFalse = "false";
+        // var vehicleSetInactiveObject = {
+        //     active: putFalse
+        // }
+        Vehicle.defaultVehicle = true;
+
+
+
+        $http.put(putVehicleUrl, Vehicle, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
+
+            console.log("SuccessfullCallback put vehilcle ", response);
+
+
+
+            // If error --------------------------------------------------------------------------------------------------
+        }, function errorCallback(response) {
+
+            console.log("errorCallback response put vehilcle: " + response);
+
+        });
     }
 
+    
    
    
 });
@@ -283,12 +478,6 @@ app.controller("addVehiclesController", function ($scope, $http, $rootScope, $wi
 
 
  
-});
-app.controller("completeRoadtripController", function ($scope, $http, $rootScope, $window, $cookies) {
-
-
-
-
 });
 app.controller("supportController", function ($scope, $http, $rootScope, $window, $cookies) {
 

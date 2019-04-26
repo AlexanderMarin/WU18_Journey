@@ -23,8 +23,10 @@
                             <b>{{Vehicle.make}}</b> | {{Vehicle.plateNumber}}
                             <div class="float-right">
                                 <button ng-click="deleteVehicle(Vehicle)" class="btn btn-sm btn-danger"> - Ta bort fordon</button>
-                                <button ng-if="Vehicle.active" ng-click="setVehicleInActive(Vehicle)" class="btn btn-sm btn-info"> Inaktivera</button>
-                                <button ng-if="!Vehicle.active" ng-click="setVehicleActive(Vehicle)" class="btn btn-sm btn-info"> Aktivera</button>
+                                <button ng-if="Vehicle.defaultVehicle" class="btn btn-sm btn-primary">Standardbil</button>
+                                <button ng-if="!Vehicle.defaultVehicle" ng-click="setVehicleStandard(Vehicle)" class="btn btn-sm btn-warning">Gör till Standardbil</button>
+                                <button ng-if="Vehicle.active" ng-click="setVehicleInActive(Vehicle)" class="btn btn-sm btn-info"> Tillgänglig</button>
+                                <button ng-if="!Vehicle.active" ng-click="setVehicleActive(Vehicle)" class="btn btn-sm btn-secondary"> Otillgänglig</button>
                             </div>
 
 

@@ -10,6 +10,8 @@ namespace WU18_Journey.Models
     public class Roadtrip
     {
         public int RoadtripId { get; set; }
+        public string VehicleMake { get; set; }
+        public string VehiclePlateNumber { get; set; }
         public int RoadtripMilesStart { get; set; }
         public int RoadtripMilesStop { get; set; }
         public DateTime Date { get; set; }
@@ -18,6 +20,7 @@ namespace WU18_Journey.Models
         public string Matter { get; set; }
         public string Note { get; set; }
         public int TravelDistance { get; set; }
+        public bool ongoingRoadtrip { get; set; }
         public Vehicle Vehicle { get; set; }
         public WU18_JourneyUser User { get; set; }
 

@@ -82,6 +82,24 @@ namespace WU18_Journey.API
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        [HttpPost]
+        [Route("/register")]
+        public async Task<IActionResult> RegisterAsync([FromBody] Login postRegister)
+        {
+
+            var user = new WU18_JourneyUser();
+
+            user.UserName = postRegister.email;
+            user.Email = postRegister.email;
+
+            
+
+            var result = await _userManager.CreateAsync(user, postRegister.password);
+
+            return Ok(result);
+
+        }
+
         // GET: api/User
         [HttpGet]
         [Authorize]

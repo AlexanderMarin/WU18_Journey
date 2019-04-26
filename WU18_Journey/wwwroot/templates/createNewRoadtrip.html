@@ -7,17 +7,38 @@
 
         <center> <h3><b>Skapa ny resa</b></h3></center>
 
+        <br />
+
         <form>
             <!-- Choose Car -->
             <div class="dropdown">
                 <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    (Programmera in standardbil)
+                    {{dropdownText}}
                 </button>
                 <small id="emailHelp" class="form-text text-muted">Välj bil för din resa.</small>
 
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Bil 1</a>
-                    <a class="dropdown-item" href="#">Bil 2</a>
+                <div class="dropdown-menu dropdownSelectableEffectOwnCss" aria-labelledby="dropdownMenuButton">
+                    <ul>
+                        <li ng-repeat="Vehicle in getAvailableVehicles" ng-if="Vehicle.active">
+                           
+
+                            <a ng-click="selectCarForRoadtrip(Vehicle)">
+                                <div class="container dropdownPaddingOwnCss ">
+                                    <div class="row">
+                                        <div class="col-lg-12"><b>{{Vehicle.make}}</b> {{Vehicle.plateNumber}}</div>
+                                       
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+
+
+
+
+                        </li>
+                    </ul>
                 </div>
             </div>
 

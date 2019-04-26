@@ -8,31 +8,56 @@
     <br />
     <div class="container">
 
-        <center> <h3><b>Skapa ny resa</b></h3></center>
-
+        <center> <h3><b>KOmplettera resa</b></h3></center>
+        <br />
         <form>
             <!-- Choose Car -->
-            <div class="dropdown">
-                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    (Programmera in standardbil)
-                </button>
-                <small id="emailHelp" class="form-text text-muted">Välj bil för din resa.</small>
+            <h4>Resebil</h4>
+            <p> <b></b> </p>
+            <div>
+              <div ng-if="!roadtripCarMake" class="dropdown">
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{dropdownText}}
+                    </button>
+                    <small id="emailHelp" class="form-text text-muted">Välj bil för din resa.</small>
 
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Bil 1</a>
-                    <a class="dropdown-item" href="#">Bil 2</a>
+                    <div class="dropdown-menu dropdownSelectableEffectOwnCss" aria-labelledby="dropdownMenuButton">
+                        <ul>
+                            <li ng-repeat="Vehicle in getAvailableVehicles" ng-if="Vehicle.active">
+
+
+                                <a ng-click="selectCarForRoadtrip(Vehicle)">
+                                    <div class="container dropdownPaddingOwnCss ">
+                                        <div class="row">
+                                            <div class="col-lg-12"><b>{{Vehicle.make}}</b> {{Vehicle.plateNumber}}</div>
+
+                                        </div>
+
+                                    </div>
+
+                                </a>
+
+
+
+
+
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
+             <input ng-if="roadtripCarMake" class="form-control" readonly id="exampleInputPassword1" value="{{roadtripCarMake}} {{roadtripCarNumberPlate}}">
+            </div>
             <br />
 
             <!-- Choose Car End -->
-            <h4>Ange datum</h4>
-            <p>Datepicker from plugin</p>
+            <h4>Datum</h4>
+            <p>{{roadtripDate}}</p>
+
 
             <br />
 
-            <h4>Ange mätarställningar</h4>
+            <h4>Mätarställningar</h4>
             <div class="form-group">
                 <label for="exampleInputEmail1">Mätarställning start</label>
                 <input type="number" class="form-control" id="exampleInputEmail1" placeholder="Mätarställning start">
@@ -40,32 +65,33 @@
 
             <div class="form-group">
                 <label for="exampleInputEmail1">Mätarställning ankomst</label>
-                <input type="number" class="form-control" id="exampleInputEmail1" placeholder="Mätarställning ankomst">
+                <input type="number" class="form-control" id="exampleInputEmail1" value="5" placeholder="Mätarställning ankomst">
             </div>
 
             <br />
 
-            <h4>Ange reslängd</h4>
+            <h4>Reslängd</h4>
             <div class="form-group">
                 <label for="exampleInputEmail1">Reslängd</label>
                 <input type="number" class="form-control" id="exampleInputEmail1" placeholder="Reslängd, km">
             </div>
 
             <br />
-            <h4>Ange adress</h4>
+            <h4>Adress</h4>
 
             <div class="form-group">
                 <label for="exampleInputEmail1">Startadress</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ange startadress">
+                <input class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ange startadress">
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Destinationsadress</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Ange destinationsadress">
+                <input ng-if="!roadtripCarMake" class="form-control" id="exampleInputPassword1" placeholder="komplettera med bil här">
+                <input ng-if="roadtripCarMake" class="form-control" readonly id="exampleInputPassword1" value="{{roadtripCarMake}}">
             </div>
 
             <br />
 
-            <h4>Ange ärende</h4>
+            <h4>Ärende</h4>
             <div class="form-group">
                 <label for="comment">Ärende</label>
                 <textarea class="form-control" rows="5" id="comment" placeholder="Ange ditt ärende"></textarea>
@@ -83,7 +109,7 @@
 
             <div>
                 <center>
-                    <button type="submit" class="btn btn-primary btn-block">Spara</button>
+                    <button type="submit" class="btn btn-warning btn-block">Komplettera resa</button>
 
                 </center>
             </div>

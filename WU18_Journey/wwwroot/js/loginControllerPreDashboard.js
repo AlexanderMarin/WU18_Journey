@@ -126,7 +126,28 @@
 
     }; // Login works
 
-    
+    $scope.registerJsAction = function () {
+
+        let PostObject = {
+            email: $scope.registerEmail,
+            password: $scope.registerPassword
+        };
+
+        $http.post("/register", PostObject).then(function (response) {
+
+            $scope.errors = response.data.errors;
+
+            if (response.data.succeeded) {
+                alert("Användaren registrerades.");
+                $scope.email = "";
+                $scope.password = "";
+            }
+
+            console.log(response);
+
+        });
+
+    }
 
 
     

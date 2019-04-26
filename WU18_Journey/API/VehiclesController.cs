@@ -46,9 +46,22 @@ namespace WU18_Journey.API
             // obj.defaultvehicle = user.DefaultVehicle;
             obj.AvailableVehicles = user.AvailableVehicles;
 
-
+            
             return Ok(obj);
         }
+
+        //// GET: api/Vehicles VILL RETURNA EN DEFAULT CAR MEN KAN INTE LADDA BÅDA APIS SAMTIDIGT
+        //[HttpGet]
+        //[Authorize]
+        //public async Task<IActionResult> GetDefaultVehicle()
+        //{
+            
+
+        //    var defaultCar = _context.Vehicle.Where(x => x.defaultVehicle == true).FirstOrDefault();
+
+
+        //    return Ok(defaultCar);
+        //}
 
         // GET: api/Vehicles/5
         [HttpGet("{id}")]
@@ -103,6 +116,7 @@ namespace WU18_Journey.API
 
             return NoContent();
         }
+
 
         // POST: api/Vehicles
         [HttpPost]

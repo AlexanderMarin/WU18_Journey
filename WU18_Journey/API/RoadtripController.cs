@@ -51,17 +51,20 @@ namespace WU18_Journey.API
             return Ok(user.UserRoadtrips.ToList());
         }
 
-        // GET: api/Roadtrip/5
-        //[HttpGet]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+        
+        [HttpGet("{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetRoadtripById(int id)
+        {
+            var roadtrip = _context.Roadtrip.Where(x => x.RoadtripId == id).FirstOrDefault();
 
-        // POST: api/Roadtrip
+            return Ok(roadtrip);
+        }
 
 
 
+        // POST: api/Roadtrip/
+        
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Post([FromBody] Roadtrip roadtrip)

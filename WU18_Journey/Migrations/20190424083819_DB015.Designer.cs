@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WU18_Journey.Models;
 
 namespace WU18_Journey.Migrations
 {
     [DbContext(typeof(WU18_JourneyContext))]
-    partial class WU18_JourneyContextModelSnapshot : ModelSnapshot
+    [Migration("20190424083819_DB015")]
+    partial class DB015
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -230,10 +232,6 @@ namespace WU18_Journey.Migrations
                     b.Property<string>("UserId");
 
                     b.Property<int?>("VehicleId");
-
-                    b.Property<string>("VehicleMake");
-
-                    b.Property<string>("VehiclePlateNumber");
 
                     b.Property<bool>("ongoingRoadtrip");
 

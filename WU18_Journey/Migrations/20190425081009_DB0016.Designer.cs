@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WU18_Journey.Models;
 
 namespace WU18_Journey.Migrations
 {
     [DbContext(typeof(WU18_JourneyContext))]
-    partial class WU18_JourneyContextModelSnapshot : ModelSnapshot
+    [Migration("20190425081009_DB0016")]
+    partial class DB0016
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
