@@ -70,7 +70,15 @@
         console.log(loginemail);
         console.log(loginpassword);
 
+        $scope.registeredSuccessfully = Boolean(JSON.parse(false));
+        $scope.fieldsNotValid = Boolean(JSON.parse(false));
+        $scope.fieldsNotFilled = Boolean(JSON.parse(false));
+        if (loginemail == "" || loginpassword == "") {
+            $scope.fieldsNotFilled = Boolean(JSON.parse(true));
+        }
 
+       
+        
 
 
         var data = {
@@ -92,11 +100,9 @@
                 let loggedInUser = {};
 
                 loggedInUser.Email = responseFromApi.data.email;
-              //  loggedInUser.Availablevehicles = responseFromApi.data.availableVehicles;
                 loggedInUser.CookieWithToken = $rootScope.token;
 
                
-             //  $cookies.put("loggedInUser", JSON.stringify(loggedInUser));
 
 
                 var now = new Date(),
@@ -122,12 +128,13 @@
 
         }
             , function (err) {
-                console.log('errpr: ', err);
+                $scope.fieldsNotValid = Boolean(JSON.parse(true));
             });
 
         
 
     }; // Login works
+    $scope.registeredSuccessfully = Boolean(JSON.parse(false));
 
     $scope.registerJsAction = function () {
 
@@ -136,18 +143,23 @@
             password: $scope.registerPassword
         };
 
+      
         $http.post("/register", PostObject).then(function (response) {
 
-            $scope.errors = response.data.errors;
-
+   
             if (response.data.succeeded) {
-                alert("Användaren registrerades.");
-                $scope.email = "";
-                $scope.password = "";
+                $scope.registeredSuccessfully = Boolean(JSON.parse(true));
+
+            } else {
+                $scope.fieldsNotValid = Boolean(JSON.parse(true));
+
+
             }
+            
 
             console.log(response);
 
+        }, function (err) {
         });
 
     }

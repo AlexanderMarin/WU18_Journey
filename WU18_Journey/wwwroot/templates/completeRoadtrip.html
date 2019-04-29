@@ -15,7 +15,7 @@
             <h4>Resebil</h4>
             <p> <b></b> </p>
             <div>
-              <div ng-if="!roadtripCarMake" class="dropdown">
+                <div ng-if="!roadtripCarMake" class="dropdown">
                     <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{dropdownText}}
                     </button>
@@ -46,7 +46,7 @@
                     </div>
                 </div>
 
-             <input ng-if="roadtripCarMake" class="form-control" readonly id="exampleInputPassword1" value="{{roadtripCarMake}} {{roadtripCarNumberPlate}}">
+                <input ng-if="roadtripCarMake" class="form-control" readonly id="exampleInputPassword1" value="{{roadtripCarMake}} {{roadtripCarNumberPlate}}">
             </div>
             <br />
 
@@ -69,7 +69,7 @@
                 <input ng-if="roadtripMilesStop" type="text" class="form-control" readonly id="exampleInputEmail1" value="{{roadtripMilesStop}}">
             </div>
 
-           
+
             <br />
             <h4>Adress</h4>
 
@@ -97,7 +97,7 @@
             <h4>Anteckningar</h4>
             <div class="form-group">
                 <label for="comment">Anteckningar</label>
-                <textarea ng-if="!roadtripNote" ng-model="NotecompleteRoadtrip"  class="form-control" rows="5" placeholder="Komplettera..."></textarea>
+                <textarea ng-if="!roadtripNote" ng-model="NotecompleteRoadtrip" class="form-control" rows="5" placeholder="Komplettera..."></textarea>
                 <input ng-if="roadtripNote" class="form-control" type="text" placeholder="{{roadtripNote}}" readonly>
             </div>
 
@@ -113,7 +113,13 @@
 
         </form>
 
+        <br />
 
+        <div ng-show="roadtripSuccessfullyCompleted">
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">Resa är nu tillagd</h4>
+            </div>
+        </div>
 
     </div>
 

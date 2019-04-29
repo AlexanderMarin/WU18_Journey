@@ -36,14 +36,12 @@
                 <label for="exampleInputEmail1">E-post address</label>
                 <input ng-model="loginEmail" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ange din E-post address">
             </div>
-            <hr />
             <div class="form-group">
                 <label for="exampleInputPassword1">Lösenord</label>
                 <input ng-model="loginPassword" type="password" class="form-control" id="exampleInputPassword1" placeholder="Lösenord">
             </div>
-            <hr />
 
-            <a href="#">Glömt lösenordet?</a>
+            <a class="blue-link-text-own" href="#">Glömt lösenordet?</a>
 
             <br />
             <br />
@@ -62,6 +60,33 @@
                     <a class="blue-link-text-own" href="#!/register/">Skapa konto</a>
                 </center>
             </div>
+
+            <div ng-show="fieldsNotFilled">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Holy guacamole!</strong> Du borde fylla i alla fält ovanför :)
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+
+            <div ng-show="fieldsNotValid">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Holy guacamole!</strong> Du har angivit fel e-post eller lösenord :(
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+
+            <div ng-show="registeredSuccessfully">
+                <div class="alert alert-success" role="alert">
+                    <h4 class="alert-heading">Du är nu registrerad!</h4>
+                    <hr>
+                    <p class="mb-0">Logga in ovanför för att få tillgång till ditt konto.</p>
+                </div>
+            </div>
+
 
         </form>
 

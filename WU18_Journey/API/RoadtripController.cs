@@ -21,7 +21,8 @@ namespace WU18_Journey.API
         private readonly UserManager<WU18_JourneyUser> _userManager;
 
 
-        public RoadtripController(WU18_JourneyContext context, UserManager<WU18_JourneyUser> userManager)
+        public RoadtripController(WU18_JourneyContext context, 
+            UserManager<WU18_JourneyUser> userManager)
         {
             _context = context;
             _userManager = userManager;

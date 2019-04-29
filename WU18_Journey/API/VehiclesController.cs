@@ -50,18 +50,7 @@ namespace WU18_Journey.API
             return Ok(obj);
         }
 
-        //// GET: api/Vehicles VILL RETURNA EN DEFAULT CAR MEN KAN INTE LADDA BÅDA APIS SAMTIDIGT
-        //[HttpGet]
-        //[Authorize]
-        //public async Task<IActionResult> GetDefaultVehicle()
-        //{
-            
-
-        //    var defaultCar = _context.Vehicle.Where(x => x.defaultVehicle == true).FirstOrDefault();
-
-
-        //    return Ok(defaultCar);
-        //}
+   
 
         // GET: api/Vehicles/5
         [HttpGet("{id}")]
@@ -157,7 +146,7 @@ namespace WU18_Journey.API
 }
 
 // DELETE: api/Vehicles/5
-[HttpDelete("{id}")]
+    [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehicle([FromRoute] int id)
         {
             if (!ModelState.IsValid)

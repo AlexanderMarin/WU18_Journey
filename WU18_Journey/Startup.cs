@@ -105,6 +105,11 @@ namespace WU18_Journey
 
             app.UseAuthentication();
 
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chatHub");
+            });
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -112,10 +117,8 @@ namespace WU18_Journey
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            app.UseSignalR(routes =>
-            { 
-            routes.MapHub<ChatHub>("/chatHub");
-            });
+            
+
         }
     }
 }

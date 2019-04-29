@@ -20,13 +20,13 @@
                 <div class="dropdown-menu dropdownSelectableEffectOwnCss" aria-labelledby="dropdownMenuButton">
                     <ul>
                         <li ng-repeat="Vehicle in getAvailableVehicles" ng-if="Vehicle.active">
-                           
+
 
                             <a ng-click="selectCarForRoadtrip(Vehicle)">
                                 <div class="container dropdownPaddingOwnCss ">
                                     <div class="row">
                                         <div class="col-lg-12"><b>{{Vehicle.make}}</b> {{Vehicle.plateNumber}}</div>
-                                       
+
                                     </div>
 
                                 </div>
@@ -112,10 +112,26 @@
 
         </form>
 
-        
-      
+        <br />
+
+        <div ng-show="roadtripSuccessfullyCreated">
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">Resa är nu tillagd</h4>
+            </div>
+        </div>
+
+        <br />
+
+        <div ng-show="roadtripNotCreated">
+            <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading">Du måste avsluta pågående resor innan nu kan skapa nya resor.</h4>
+            </div>
+        </div>
+
         
 
+
+        
     </div>
 
     <br />

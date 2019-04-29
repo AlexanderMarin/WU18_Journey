@@ -13,16 +13,11 @@
     <div class="row">
         <div class="col-lg-12">
 
-            <div class="form-group">
-                <label for="exampleFormControlSelect2">Example multiple select</label>
-                <select multiple class="form-control chatbox" id="exampleFormControlSelect2">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </select>
-            </div>
+            
+                <ul class="form-control chatbox" id="exampleFormControlSelect2">
+                    <li ng-repeat="item in messages"><b ng-bind="item.name"></b> <small ng-bind="item.time"></small>: {{item.message}}</li>
+                    
+                </ul>
             </div>
             </div>
 
@@ -34,17 +29,17 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <label for="comment">Namn</label>
-                            <input ng-model="VehiclePlateNumber" type="text" class="form-control" placeholder="Ange nummerplåt">
+                            <input ng-model="user.name" type="text" class="form-control" placeholder="Ange nummerplåt">
                         </div>
                         <div class="col-lg-6">
                             <label for="comment">Meddelande</label>
-                            <input ng-model="VehicleMake" type="text" class="form-control" placeholder="Ange märke">
+                            <input ng-model="user.message" type="text" class="form-control" placeholder="Ange märke">
                         </div>
                         <br />
                         <br />
                         <br />
                         <br />
-                        <button ng-click="addNewVehicleJsAction()" class="btn btn-info btn-block" type="submit">Skicka</button>
+                        <button ng-click="send()" class="btn btn-info btn-block" type="submit">Skicka</button>
                     </div>
                 </div>
 
