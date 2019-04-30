@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -21,7 +22,7 @@ namespace WU18_Journey.API
         private readonly UserManager<WU18_JourneyUser> _userManager;
 
 
-        public RoadtripController(WU18_JourneyContext context, 
+        public RoadtripController(WU18_JourneyContext context,
             UserManager<WU18_JourneyUser> userManager)
         {
             _context = context;
@@ -52,7 +53,7 @@ namespace WU18_Journey.API
             return Ok(user.UserRoadtrips.ToList());
         }
 
-        
+
         [HttpGet("{id}")]
         [Authorize]
         public async Task<IActionResult> GetRoadtripById(int id)
@@ -65,16 +66,36 @@ namespace WU18_Journey.API
 
 
         // POST: api/Roadtrip/
-        
+
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Post([FromBody] Roadtrip roadtrip)
 
         {
+
+            var email = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value;
+
+            var user = _context.Users
+                .Where(x => x.Email == email)
+                .Include(x => x.UserRoadtrips)
+                .FirstOrDefault();
+
+            foreach (Roadtrip ongoingRoadtripsCheck in user.UserRoadtrips)
+            {
+                if (ongoingRoadtripsCheck.ongoingRoadtrip == true)
+                {
+                    return BadRequest(ModelState);
+
+                }
+
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
+        
 
             _context.Roadtrip.Add(roadtrip);
 
@@ -83,12 +104,7 @@ namespace WU18_Journey.API
 
 
 
-            var email = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value;
-
-            var user = _context.Users
-                .Where(x => x.Email == email)
-                .Include(x => x.UserRoadtrips)
-                .FirstOrDefault();
+            
 
             // var user = await _userManager.FindByEmailAsync(email);
 
@@ -114,6 +130,62 @@ namespace WU18_Journey.API
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+
+
+
+
+
+
+
+
+
+
+        // code will return the info from journey which is necessary for chart report
+        // GET: api/report
+        [HttpPost]
+        [Route("/api/rapport")]
+        public IActionResult chartReport(Report report)
+        {
+            {
+                //return the info from database
+                var journeyReport = _context.Roadtrip
+                    .Include(x => x.Vehicle)
+                    .Where(x => x.VehiclePlateNumber == report.LicensePlate).ToList();
+
+                var countJourney20 = 0;
+                var countJourney50 = 0;
+                var countJourney200 = 0;
+
+                foreach (var item in journeyReport)
+                {
+                    if ((item.Date >= report.DateTimeStart.AddHours(2)) && (item.Date <= report.DateTimeStop.AddHours(25).AddMinutes(59)))
+                    {
+
+                        if ((item.RoadtripMilesStop - item.RoadtripMilesStart) <= 20)
+                        {
+                            countJourney20 = countJourney20 + 1;
+
+                        }
+                        if ((item.RoadtripMilesStop - item.RoadtripMilesStart) > 20 && (item.RoadtripMilesStop - item.RoadtripMilesStart) <= 50)
+                        {
+                            countJourney50 = countJourney50 + 1;
+                        }
+                        if ((item.RoadtripMilesStop - item.RoadtripMilesStart) > 50)
+                        {
+                            countJourney200 = countJourney200 + 1;
+                        }
+                    }
+                }
+
+                var length = new int[] { countJourney20, countJourney50, countJourney200 };
+
+
+                return Ok(Newtonsoft.Json.JsonConvert.SerializeObject(length));
+
+
+            }
         }
     }
 }

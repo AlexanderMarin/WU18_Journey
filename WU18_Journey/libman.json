@@ -7,13 +7,13 @@
       "destination": "wwwroot/lib/angular.js/"
     },
     {
-      "library": "angular-chart.js@1.1.1",
-      "destination": "wwwroot/lib/angular-chart.js/"
-    },
-    {
       "provider": "unpkg",
       "library": "@aspnet/signalr@1.1.2",
       "destination": "wwwroot/lib/@aspnet/signalr/"
+    },
+    {
+      "library": "angular-chart.js@1.1.1",
+      "destination": "wwwroot/lib/angular-chart.js/"
     }
   ]
 }

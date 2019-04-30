@@ -1,0 +1,38 @@
+﻿
+<div class="container">
+
+
+  
+
+
+
+    <select class="form-control btn-info" ng-model="selectVehicle">
+        <option ng-repeat="Vehicle in getAvailableVehicles" value="{{Vehicle.plateNumber}}">
+            <a ng-click="selectCarForRapport(Vehicle)">
+
+                <div class="row">
+                    <div class="col-lg-12"><b>{{Vehicle.make}}</b> {{Vehicle.plateNumber}}</div>
+
+                </div>
+
+            </a>
+        </option>
+    </select>
+
+
+    <p>start date</p>
+    <input ng-model="DateTimeStartReport" type="date" name="name" value="" />
+
+    <p>start date</p>
+    <input ng-model="DateTimeStopReport" type="date" name="name" value="" />
+
+    <button ng-click="createReportJsAction()">Skapa rapport</button>
+    <button ng-click="createPdfJsAction()">Skapa PDF</button>
+
+    <div class="formDataReport">
+        <!--for Chart-->
+        <canvas id="doughnut" class="chart chart-doughnut canvasClass"
+        chart-data="data" chart-labels="labels" chart-options="options"></canvas>
+    </div>
+
+</div>

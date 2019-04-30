@@ -31,8 +31,9 @@ body {
 li {
     list-style: none;
 }
-.chatbox{
-
+.chatbox {
+    overflow: scroll;
+    
 }
 .black-link-text-own a{
     color:black;

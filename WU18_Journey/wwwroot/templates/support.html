@@ -11,20 +11,24 @@
     <br />
     <br />
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12 chatbox">
+            <br />
 
-            
-                <ul class="form-control chatbox" id="exampleFormControlSelect2">
-                    <li ng-repeat="item in messages"><b ng-bind="item.name"></b> <small ng-bind="item.time"></small>: {{item.message}}</li>
-                    
-                </ul>
-            </div>
-            </div>
+            <ul class="form-control">
+                <li ng-repeat="item in messages"><b ng-bind="item.name"></b> <small ng-bind="item.time"></small>: {{item.message}}</li>
+                <br />
+            </ul>
+            <br />
+            <br /><br />
+            <br /><br />
+        </div>
 
+            </div>
+    
 
             <div class="row">
              <div class="col-lg-12">
-                    <hr />
+                    
                     <h4>Skicka ett meddelande</h4>
                     <div class="row">
                         <div class="col-lg-6">

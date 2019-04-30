@@ -23,14 +23,17 @@
 
   <ItemGroup>
     <PackageReference Include="iTextSharp.LGPLv2.Core" Version="1.5.0" />
+    <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="2.2.10" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Services\" />
     <Folder Include="Data\" />
+    <Folder Include="wwwroot\pdf\" />
   </ItemGroup>
 
   <ItemGroup>

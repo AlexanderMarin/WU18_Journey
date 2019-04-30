@@ -54,6 +54,7 @@
             <div class="form-group">
                 <label for="exampleInputEmail1">Mätarställning start</label>
                 <input ng-model="RoadtripMilesStart" type="number" class="form-control" placeholder="Mätarställning start">
+                <div class="myerror" ng-show="startError">Du måste ange startvärde.</div>
             </div>
 
             <div class="form-group">
@@ -79,11 +80,18 @@
 
                 <input ng-model="StartDestination" type="text" class="form-control" placeholder="Ange startadress">
             </div>
+
             <button class="btn btn-info btn-sm" ng-click="findAdress()">Hitta automatiskt min adress</button>
+
             <div class="form-group">
                 <label for="exampleInputPassword1">Destinationsadress</label>
+                <br />
+                {{myAdressDestination}}
                 <input ng-model="StopDestination" type="text" class="form-control" placeholder="Ange destinationsadress">
             </div>
+
+            <button class="btn btn-info btn-sm" ng-click="findAdressForDestination()">Hitta automatiskt min adress</button>
+
 
             <br />
 
@@ -129,6 +137,8 @@
         </div>
 
         
+
+
 
 
         

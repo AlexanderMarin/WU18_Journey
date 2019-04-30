@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WU18_Journey.Models;
 using WU18_Journey.Areas.Identity.Data;
+using Microsoft.Extensions.Logging;
 
 namespace WU18_Journey
 {
@@ -51,13 +52,15 @@ namespace WU18_Journey
             //services.AddDefaultIdentity<IdentityUser>()
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddSignalR(); 
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(options => { options.SerializerSettings.ReferenceLoopHandling
                     = Newtonsoft.Json.ReferenceLoopHandling.Ignore; });
 
 
-            services.AddSignalR();
-
+            
+                
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
@@ -85,8 +88,10 @@ namespace WU18_Journey
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddLog4Net();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -104,6 +109,8 @@ namespace WU18_Journey
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            app.UseDeveloperExceptionPage();
 
             app.UseSignalR(routes =>
             {

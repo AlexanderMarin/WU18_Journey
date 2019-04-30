@@ -13,9 +13,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WU18_Journey.Models;
 
-namespace WU18_Journey.API
+namespace WU18_Journey
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]")] 
     [ApiController]
     public class PdfController : ControllerBase
     {
@@ -23,16 +23,16 @@ namespace WU18_Journey.API
              private readonly WU18_JourneyContext _context;
             public readonly IHostingEnvironment _hostingEnvironment;
 
-            public PdfController(IHostingEnvironment hostingEnvironment, WU18_JourneyContext context)
+        public PdfController(IHostingEnvironment hostingEnvironment, WU18_JourneyContext context)
         {
             _hostingEnvironment = hostingEnvironment;
             _context = context;
 
         }
 
-        [HttpGet]
-        [Route("/pdf")]
-        public ActionResult pdf()
+        [HttpPost]
+        [Route("/api/pdf")]
+        public async Task<ActionResult> pdfAsync (Report report)
         {
 
 
@@ -64,21 +64,33 @@ namespace WU18_Journey.API
 
 
 
-            string name = HttpContext.Request.Query["name"].ToString();
+            var name = HttpContext.Request.Query["name"].ToString();
 
-            var savePath = _hostingEnvironment.WebRootPath + "\\pdf\\" + name + ".pdf";
+            var path = _hostingEnvironment.WebRootPath + "\\pdf\\" + report.LicensePlate + ".pdf";
 
-            var doc = new iTextSharp.text.Document(PageSize.A4);
+            var doc = new iTextSharp.text.Document(PageSize.A4.Rotate());
 
-            PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(savePath, FileMode.Create));
+           using ( FileStream fs = new FileStream(path, FileMode.Create))
+            {
+                
+           var writer = PdfWriter.GetInstance(doc, fs);
 
-            doc.Open();
-            var baseFont = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, false);
-            var Color = BaseColor.Black;
-            Font fontText = new Font(baseFont, 14, Font.NORMAL, Color);
 
-            var baseFontHeader = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, false);
-            Font fontHeader = new Font(baseFontHeader, 22, Font.BOLD, Color);
+
+                var baseFont = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, false);
+                var Color = BaseColor.Black;
+                Font fontText = new Font(baseFont, 14, Font.NORMAL, Color);
+
+                var baseFontHeader = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, false);
+                Font fontHeader = new Font(baseFontHeader, 22, Font.BOLD, Color);
+
+
+                doc.Open();
+
+                var image = Image.GetInstance(_hostingEnvironment.WebRootPath + @"\IMG\SKV_RGB_st.png");
+                image.SetAbsolutePosition(55, 540);
+                doc.Add(image);
+
 
             var header = new Paragraph("här kommer en rubrik", fontHeader);
             doc.Add(header);
@@ -88,38 +100,104 @@ namespace WU18_Journey.API
 
             // SKAPAR TABLE
 
-            var table = new Table(2);
-            var cell = new Cell(new Phrase("Rubrik"));
-            cell.Colspan = 2;
-            cell.BackgroundColor = BaseColor.Pink;
-            cell.HorizontalAlignment = 1;
+            var journeyReport = await _context.Roadtrip
+                .Where(x => x.VehiclePlateNumber == report.LicensePlate)
+                .ToListAsync();
+                
 
-            table.AddCell(cell);
+                var textVehicleInfo = new Chunk("Nummerplåt: " + report.LicensePlate, fontText);
+            doc.Add(textVehicleInfo);
 
-            table.AddCell("ProduktId");
-            table.AddCell(1.ToString());
-            table.AddCell("ProduktName");
-            table.AddCell("Produkten");
-            table.AddCell("Pris");
-            table.AddCell("100.00 SEK");
+            var textDateInfo = new Chunk("Datum: " + report.DateTimeStart + "Slutdatum: " + report.DateTimeStop);
+            doc.Add(textDateInfo);
+
+            var table = new Table(8);
+            table.Padding = 5;
+            table.DefaultHorizontalAlignment = 1;
+            table.DefaultVerticalAlignment = Element.ALIGN_MIDDLE;
+            table.Width = 100;
+
+            var JourneyDate = new Cell("Datum");
+            JourneyDate.Rowspan = 2;
+            JourneyDate.BackgroundColor = BaseColor.Green;
+            table.AddCell(JourneyDate);
+
+            var Tachometer = new Cell("Mätarställning");
+            Tachometer.Colspan = 2;
+            Tachometer.BackgroundColor = BaseColor.Green;
+            table.AddCell(Tachometer);
+
+            var TotalLength = new Cell("Reselängd km");
+            TotalLength.Rowspan = 2;
+            TotalLength.BackgroundColor = BaseColor.Green;
+            table.AddCell(TotalLength);
+
+            var StartAddress = new Cell("Resans start, adress");
+            StartAddress.Rowspan = 2;
+            StartAddress.BackgroundColor = BaseColor.Green;
+            table.AddCell(StartAddress);
+
+            var Case = new Cell("Ärende och plats/företag/kontaktperson");
+            Case.Rowspan = 2;
+            Case.BackgroundColor = BaseColor.Green;
+            table.AddCell(Case);
+
+            var StopAddress = new Cell("Resans slut, adress");
+            StopAddress.Rowspan = 2;
+            StopAddress.BackgroundColor = BaseColor.Green;
+            table.AddCell(StopAddress);
+
+            var NotesUser = new Cell("Anteckningar (bilförare, tankning mm");
+            NotesUser.Rowspan = 2;
+            NotesUser.BackgroundColor = BaseColor.Green;
+            table.AddCell(NotesUser);
+
+            var StartMeter = new Cell("Start");
+            StartMeter.BackgroundColor = BaseColor.Green;
+            table.AddCell(StartMeter);
+
+            var StopMeter = new Cell("Ankomst");
+            StopMeter.BackgroundColor = BaseColor.Green;
+            table.AddCell(StopMeter);
+
+            foreach (var item in journeyReport)
+            {
+                if ((item.Date >= report.DateTimeStart.AddHours(2)) && (item.Date <= report.DateTimeStop.AddHours(25).AddMinutes(59)))
+                {
+                        try
+                        {
+                            table.AddCell(item.Date.ToString());
+                    table.AddCell(item.RoadtripMilesStart.ToString());
+                    table.AddCell(item.RoadtripMilesStop.ToString());
+                    table.AddCell(item.TravelDistance.ToString());
+                    table.AddCell(item.StartDestination.ToString());
+                    table.AddCell(item.Matter);
+                       
+                            table.AddCell(item.StopDestination.ToString());
+                       
+                    table.AddCell(item.Note);
+                        }
+                        catch (Exception ex)
+                        {
+                            table.AddCell("");
+                        }
+                    }
+
+            }
+
+
 
             doc.Add(table);
-
-            // ADDING IMAGE
             
-            var image = Image.GetInstance("c:\\Temp\\SKV\\SKV_RGB_st.jpg");
-            image.SetAbsolutePosition(5, 5);
-            doc.Add(image);
-
-
-            var chunk = new Chunk("This is a chunk!");
-            chunk.SetUnderline(1, -1.5f);
-            doc.Add(chunk);
-
-
             doc.Close();
 
-            return Ok(name + ".pdf");
+            writer.Close();
+
+
+            }
+
+
+            return Ok(path);
         }
     }
 }
