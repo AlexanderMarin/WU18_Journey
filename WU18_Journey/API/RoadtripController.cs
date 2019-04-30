@@ -132,27 +132,48 @@ namespace WU18_Journey.API
 
         
 
-        // PUT: api/Roadtrip/5
+      
+
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> PutRoadtrip([FromRoute] int id, [FromBody] Roadtrip roadtrip)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != roadtrip.RoadtripId)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(roadtrip).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RoadtripExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
+        
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
         }
-
-
-
-
-
-
-
-
-
-
 
         // code will return the info from journey which is necessary for chart report
         // GET: api/report
@@ -198,6 +219,13 @@ namespace WU18_Journey.API
 
 
             }
+           
+            private bool RoadtripExists(int id)
+            {
+                return _context.Roadtrip.Any(e => e.RoadtripId == id);
+
+            }
+
         }
     }
 }

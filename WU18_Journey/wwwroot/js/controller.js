@@ -60,14 +60,13 @@
 
 
     $scope.completeRoadtripJsFunction = function (roadtrip) {
-        var RoadtripId = roadtrip.roadtripId;
+        $rootScope.RoadtripId = roadtrip.roadtripId;
         
-        var getRoadtripToCompleteByIdUrl = "api/Roadtrip/" + RoadtripId;
-
+        var getRoadtripToCompleteByIdUrl = "api/Roadtrip/" + $rootScope.RoadtripId;
         $http.get(getRoadtripToCompleteByIdUrl, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
 
-
-
+            //GETTING DATA FROM SELECTED ROADTRIP FROM PÅGÅENDE RESOR FÖR ATT SEDAN VISA DOM PÅ ISDAN completeRoadtrip
+            $rootScope.ongoingRoadtripToComplete = response.data.ongoingRoadtrip
             $rootScope.roadtripDate = response.data.date;
             $rootScope.roadtripCarMake = response.data.vehicleMake;
             $rootScope.roadtripCarNumberPlate = response.data.vehiclePlateNumber;
@@ -77,51 +76,44 @@
             $rootScope.roadtripMatter = response.data.matter;
             $rootScope.roadtripMilesStart = response.data.roadtripMilesStart;
             $rootScope.roadtripMilesStop = response.data.roadtripMilesStop;
+            //GETTING DATA FROM SELECTED ROADTRIP FROM PÅGÅENDE RESOR FÖR ATT SEDAN VISA DOM PÅ ISDAN completeRoadtrip
 
-
-            
-
-
-
-
-
-
-
-
-
-            // If error --------------------------------------------------------------------------------------------------
-        }, function errorCallback(response) {
-
-
-        });
-
-
+            console.log(response);
+            }, function errorCallback(response) {
+            });
     };
 
-
-
-    
-
-   
-
-    $scope.completeRoadtripJsAction = function () {
-
-        
+        $scope.completeRoadtripJsAction = function () {
 
         var completeRoadtripMilesStop = $scope.RoadtripMilesStopcomplete;
         var completeRoadtripStopDestination = $scope.StopDestinationcompleteRoadtrip;
         var completeRoadtripMatter = $scope.MattercompleteRoadtrip;
         var completeRoadtripNote = $scope.NotecompleteRoadtrip;
 
-        if (completeRoadtripStopDestination == null || completeRoadtripMatter == 0 || completeRoadtripNote == null) {
+            // FIXA FORM VALIDATION SOM I GET ROADTRIP CONTROLLER OLIKA FORMAT KRÄVS
+            if (completeRoadtripStopDestination == null || completeRoadtripMatter == "" || completeRoadtripMilesStop == 0) {
             var completeOngoingRoadtripTrueOrFalse = Boolean(JSON.parse(true));
         }
         else {
             var completeOngoingRoadtripTrueOrFalse = Boolean(JSON.parse(false));
         }
 
+            // GEOLOCATION FOR STOP DESINATION ON COMPLETE ROADTRIP---------------------------
+            if (StopDestinationcompleteRoadtrip == undefined) {
+                StopDestination = $rootScope.myAdressDestinationCompleteRoadtrip;
+            }
 
-        var postRoadtripObject = {
+            if (StopDestinationcompleteRoadtrip == "") {
+                StopDestination = $rootScope.myAdressDestinationCompleteRoadtrip
+            }
+
+            if (StopDestinationcompleteRoadtrip == undefined) {
+                StopDestination = $scope.StopDestinationcompleteRoadtrip;
+            }
+        // GEOLOCATION FOR STOP DESINATION ON COMPLETE ROADTRIP---------------------------
+
+
+        var postRoadtripObjectComplete = {
             RoadtripMilesStop: completeRoadtripMilesStop,
             RoadtripMilesStop: completeRoadtripStopDestination,
             Matter: completeRoadtripMatter,
@@ -129,38 +121,21 @@
             Note: completeRoadtripNote
         };
 
-        // GEOLOCATION FOR STOP DESINATION ON COMPLETE ROADTRIP
-        if (StopDestinationcompleteRoadtrip == undefined) {
-            StopDestination = $rootScope.myAdressDestinationCompleteRoadtrip;
-        }
-
-        if (StopDestinationcompleteRoadtrip == "") {
-            StopDestination = $rootScope.myAdressDestinationCompleteRoadtrip
-        }
-
-        if (StopDestinationcompleteRoadtrip == undefined) {
-            StopDestination = $scope.StopDestinationcompleteRoadtrip;
-        }
-
-
+        // DEKLARERAR BOOL FÖR NG-SHOW MEDDELANDE
         $scope.roadtripSuccessfullyCompleted = Boolean(JSON.parse(false));
 
-        var postRoadtripUrl = "/api/Roadtrip";
+        var postRoadtripCompleteUrl = "/api/Roadtrip" + $rootScope.RoadtripId;;
 
-        $http.post(postRoadtripUrl, postRoadtripObject, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
+            $http.put(postRoadtripCompleteUrl, postRoadtripObjectComplete, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
             $scope.roadtripSuccessfullyCompleted = Boolean(JSON.parse(true));
-
-
         }, function errorCallback(response) {
-
-
         });
 
     }
 
   
 
-    
+    // controller end
 });
 
 app.controller("getRoadtripController", function ($scope, $http, $rootScope, $window, $cookies) {
