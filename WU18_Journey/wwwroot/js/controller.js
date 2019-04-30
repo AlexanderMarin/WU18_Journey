@@ -282,23 +282,23 @@ app.controller("getRoadtripController", function ($scope, $http, $rootScope, $wi
      
     $scope.createRoadtripJsAction = function () {
 
-
-
-
-
-        // MÅSTE HA MILES START DATUM OCH STARTADRESS OCH BIL FÖR ATT STARTA
-
-        // REST CAN BE COMPLETED
-
         // Formulärvalidering--------------------Formulärvalidering--------------------Formulärvalidering--------------------Formulärvalidering--------------------Formulärvalidering--------------------Formulärvalidering-------------------- 
         // för fält som krävs, dessa är bil, datum och startadress
-        if ($scope.RoadtripMilesStart == 0 || $scope.RoadtripMilesStart == null || $scope.RoadtripMilesStart == '') {
-            $scope.startError = true;
-        } else {
-
+        // REST CAN BE COMPLETED
+        if ($scope.RoadtripMilesStart == 0 || $scope.RoadtripMilesStart == null || $scope.RoadtripMilesStart == '' || $scope.RoadtripMilesStart == undefined || $scope.RoadtripMilesStart == "undefined") {
+            $scope.startSelectError = true;
         }
-        // Formulärvalidering--------------------Formulärvalidering--------------------Formulärvalidering--------------------Formulärvalidering--------------------Formulärvalidering--------------------Formulärvalidering--------------------
+        else if ($scope.dateStartReport == 0 || $scope.dateStartReport == null || $scope.dateStartReport == '') {
+            $scope.startError = true;
+        }
+        else if ($scope.dateEndReport == 0 || $scope.dateEndReport == null || $scope.dateEndReport == '') {
+            $scope.endError = true;
+        }
+        else { }
+        // Formulärvalidering--------------------Formulärvalidering--------------------Formulärvalidering--------------------Formulärvalidering--------------------Formulärvalidering--------------------Formulärvalidering-------------------- 
 
+
+        
 
         // LADDAR INFO FRÅN SCOPET TILL VARIABLER FÖR ATT POSTA-----------------------------
         var selectedVehicleMake = $rootScope.selectedVehicleMake;
