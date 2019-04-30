@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using WU18_Journey.Areas.Identity.Data;
 using WU18_Journey.Models;
@@ -84,7 +85,7 @@ namespace WU18_Journey.API
             {
                 if (ongoingRoadtripsCheck.ongoingRoadtrip == true)
                 {
-                    return BadRequest(ModelState);
+                    return NotAcceptable();
 
                 }
 
@@ -119,6 +120,17 @@ namespace WU18_Journey.API
             return Ok(user.UserRoadtrips.ToList());
 
         }
+
+        private IActionResult NotAcceptable()
+        {
+            string ErrorMessageForNotAcceptablePostRequest = "Du måste avsluta pågående resor innan nu kan skapa nya resor.";
+
+            throw new Exception(Newtonsoft.Json.JsonConvert.SerializeObject(ErrorMessageForNotAcceptablePostRequest));
+
+
+        }
+
+        
 
         // PUT: api/Roadtrip/5
         [HttpPut("{id}")]

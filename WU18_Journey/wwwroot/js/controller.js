@@ -1,29 +1,63 @@
 ﻿app.controller("journeyController", function ($scope, $http, $rootScope, $window, $cookies) {
 
-$rootScope.loggedInUser = JSON.parse($cookies.get("loggedInUser"));
+    $rootScope.loggedInUser = JSON.parse($cookies.get("loggedInUser"));
+
+    // GOOGLE GEOLOCATION---------------------GOOGLE GEOLOCATION---------------------GOOGLE GEOLOCATION---------------------GOOGLE GEOLOCATION---------------------
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function
+            (position) {
+
+            $scope.latitude = position.coords.latitude;
+            $scope.longitude = position.coords.longitude;
+            $scope.$apply();
 
 
 
+        }, function () {
+            $scope.longitude = 13.738671;
+            $scope.latitude = 57.356136;
+        });
+    } else {
+        $scope.longitude = 13.738671;
+        $scope.latitude = 57.356136;
+    }
+    // GOOGLE GEOLOCATION--------------------- GOOGLE GEOLOCATION--------------------- GOOGLE GEOLOCATION--------------------- GOOGLE GEOLOCATION---------------------
+    
+    // GETTING ADRESS FOR START completeDestinationADRESS---------------------------------------------GETTING ADRESS FOR START completeDestinationADRESS---------------------------------------------
+    $rootScope.findAdressForDestinationComplete = function () {
+        var geocoder = new google.maps.Geocoder;
 
-    // GETTING_ ROADTRIPS ON LOAD
+        var latlng = {
+            lat: parseFloat($scope.latitude),
+            lng: parseFloat($scope.longitude)
+        }
+
+        geocoder.geocode({ 'location': latlng }, function (result, status) {
+
+
+            if (result[0]) {
+
+                $rootScope.myAdressDestinationCompleteRoadtrip = result[0].formatted_address;
+
+                $scope.$apply();
+            }
+
+        });
+
+
+    }
+    // GETTING ADRESS FOR START completeDestinationADRESS---------------------------------------------GETTING ADRESS FOR START completeDestinationADRESS---------------------------------------------
+
+
+    // GETTING ROADTRIPS ON LOAD-----------------GETTING ROADTRIPS ON LOAD-----------------GETTING ROADTRIPS ON LOAD-----------------GETTING ROADTRIPS ON LOAD-----------------
     var getRoadtripsUrl = "/api/Roadtrip/";
-
     $http.get(getRoadtripsUrl, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
-
-
-
-
+        // inte implementerad men orkar inte ta bort den och testa ifall de funkar ändå
         $scope.unfinishedRoadtrips = response.data;
-
-
-
-
-
-        // If error --------------------------------------------------------------------------------------------------
     }, function errorCallback(response) {
-
-
     });
+    // GETTING ROADTRIPS ON LOAD-----------------GETTING ROADTRIPS ON LOAD-----------------GETTING ROADTRIPS ON LOAD-----------------GETTING ROADTRIPS ON LOAD-----------------
+
 
     $scope.completeRoadtripJsFunction = function (roadtrip) {
         var RoadtripId = roadtrip.roadtripId;
@@ -66,51 +100,9 @@ $rootScope.loggedInUser = JSON.parse($cookies.get("loggedInUser"));
 
 
 
+    
 
-    // GOOGLE GEOLOCATION
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function
-            (position) {
-
-            $scope.latitude = position.coords.latitude;
-            $scope.longitude = position.coords.longitude;
-            $scope.$apply();
-
-
-
-        }, function () {
-            $scope.longitude = 13.738671;
-            $scope.latitude = 57.356136;
-        });
-    } else {
-        $scope.longitude = 13.738671;
-        $scope.latitude = 57.356136;
-    }
-
-
-
-    $rootScope.findAdressForDestinationComplete = function () {
-        var geocoder = new google.maps.Geocoder;
-
-        var latlng = {
-            lat: parseFloat($scope.latitude),
-            lng: parseFloat($scope.longitude)
-        }
-
-        geocoder.geocode({ 'location': latlng }, function (result, status) {
-
-
-            if (result[0]) {
-
-                $rootScope.myAdressDestinationCompleteRoadtrip = result[0].formatted_address;
-
-                $scope.$apply();
-            }
-
-        });
-
-
-    }
+   
 
     $scope.completeRoadtripJsAction = function () {
 
@@ -172,9 +164,11 @@ $rootScope.loggedInUser = JSON.parse($cookies.get("loggedInUser"));
 });
 
 app.controller("getRoadtripController", function ($scope, $http, $rootScope, $window, $cookies) {
+// start of controller
 
 
-    // GOOGLE GEOLOCATION
+
+    // GOOGLE GEOLOCATION ----------------------GOOGLE GEOLOCATION ----------------------------------------GOOGLE GEOLOCATION ----------------------------------------------
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function
             (position) {
@@ -194,6 +188,7 @@ app.controller("getRoadtripController", function ($scope, $http, $rootScope, $wi
         $scope.latitude = 57.356136;
     }
 
+    // GETTING ADRESS FOR START ADRESS
     $scope.findAdress = function () {
 
         var geocoder = new google.maps.Geocoder;
@@ -214,7 +209,9 @@ app.controller("getRoadtripController", function ($scope, $http, $rootScope, $wi
         });
 
     };
+    // GETTING ADRESS FOR START ADRESS
 
+    // GETTING ADRESS FOR DESTINATION ADRESS
     $scope.findAdressForDestination = function () {
 
         var geocoder = new google.maps.Geocoder;
@@ -236,10 +233,9 @@ app.controller("getRoadtripController", function ($scope, $http, $rootScope, $wi
 
 
     }
-
+    // GETTING ADRESS FOR DESTINATION ADRESS
     
-  
-    
+    // GOOGLE GEOLOCATION ----------------------GOOGLE GEOLOCATION ----------------------------------------GOOGLE GEOLOCATION ----------------------------------------------
 
 
 
@@ -252,30 +248,21 @@ app.controller("getRoadtripController", function ($scope, $http, $rootScope, $wi
 
 
 
-
-
-
-
+    // INGEN ANING ----------------------INGEN ANING ----------------------------------------INGEN ANING ----------------------------------------------
     $rootScope.ongoingRoadtripsExist = Boolean(JSON.parse(false));
 
     var getRoadtripsUrl = "/api/Roadtrip/";
 
     $http.get(getRoadtripsUrl, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
 
-        //Setting if ongoing roadtrips exist
-        angular.forEach(response.data, function (item) {
-            if (!item.ongoingRoadtrip == true) {
-                $rootScope.ongoingRoadtripsExist = Boolean(JSON.parse(false));
-                console.log(item.ongoingRoadtrip);
-            }
-
-        })
+      
 
         // If error --------------------------------------------------------------------------------------------------
     }, function errorCallback(response) {
 
 
     });
+    // INGEN ANING ----------------------INGEN ANING ----------------------------------------INGEN ANING ----------------------------------------------
 
 
 
@@ -303,42 +290,42 @@ app.controller("getRoadtripController", function ($scope, $http, $rootScope, $wi
 
 
 
-    //DROPDOWN CAR SELECTION
-
-   
-
-    $scope.selectCarForRoadtrip = function (Vehicle) {
+    //DROPDOWN CAR SELECTION----------------------------------DROPDOWN CAR SELECTION----------------------------------DROPDOWN CAR SELECTION----------------------------------
+        $scope.selectCarForRoadtrip = function (Vehicle) {
         $scope.dropdownText = Vehicle.make + " " + Vehicle.plateNumber;
         $rootScope.selectedVehicleMake = Vehicle.make;
         $rootScope.selectedVehiclePlateNumber = Vehicle.plateNumber;
-        
-        
-    }
-    
+         }
+   //DROPDOWN CAR SELECTION----------------------------------DROPDOWN CAR SELECTION----------------------------------DROPDOWN CAR SELECTION----------------------------------
+
 
     $scope.RoadtripMilesStart = 0;
     $scope.RoadtripMilesStop = 0;
 
     
-
-   // $rootScope.selectedVehicleMake = Vehicle.make;
-    // $rootScope.selectedVehiclePlateNumber = Vehicle.plateNumber;
-    $scope.$watch("RoadtripMilesStart", function () {
-        if ($scope.RoadtripMilesStart != '') {
-            $scope.startError = false;
-        }
-    });
+ 
      
     $scope.createRoadtripJsAction = function () {
 
-        // Formulärvalidering för fält som krävs, dessa är bil, datum och startadress!!!!
+
+
+
+
+        // MÅSTE HA MILES START DATUM OCH STARTADRESS OCH BIL FÖR ATT STARTA
+
+        // REST CAN BE COMPLETED
+
+        // Formulärvalidering--------------------Formulärvalidering--------------------Formulärvalidering--------------------Formulärvalidering--------------------Formulärvalidering--------------------Formulärvalidering-------------------- 
+        // för fält som krävs, dessa är bil, datum och startadress
         if ($scope.RoadtripMilesStart == 0 || $scope.RoadtripMilesStart == null || $scope.RoadtripMilesStart == '') {
             $scope.startError = true;
         } else {
 
         }
+        // Formulärvalidering--------------------Formulärvalidering--------------------Formulärvalidering--------------------Formulärvalidering--------------------Formulärvalidering--------------------Formulärvalidering--------------------
 
 
+        // LADDAR INFO FRÅN SCOPET TILL VARIABLER FÖR ATT POSTA-----------------------------
         var selectedVehicleMake = $rootScope.selectedVehicleMake;
         var selectedVehiclePlateNumber = $rootScope.selectedVehiclePlateNumber;
         
@@ -350,22 +337,22 @@ app.controller("getRoadtripController", function ($scope, $http, $rootScope, $wi
         var StopDestination = $scope.StopDestination;
         var Matter = $scope.Matter;
         var Note = $scope.Note;
+        // LADDAR INFO FRÅN SCOPET TILL VARIABLER FÖR ATT POSTA-----------------------------
 
-
+        // RESOLVES WHETER TYPED ADRESS OR GOOGLE GEOLOCATION ADRESS I LOADED - FOR START ADRESS
         if (StartDestination == undefined) {
             StartDestination = $scope.myAdress;
         }
-
         if (StartDestination == "") {
             StartDestination = $scope.myAdress;
         }
-
         if (StartDestination == undefined) {
             StartDestination = $scope.StartDestination;
         }
+        // RESOLVES WHETER TYPED ADRESS OR GOOGLE GEOLOCATION ADRESS I LOADED FOR START ADRESS
 
 
-
+        // RESOLVES WHETER TYPED ADRESS OR GOOGLE GEOLOCATION ADRESS I LOADED FOR DESTINATION ADRESS
         if (StopDestination == undefined) {
             StopDestination = $scope.myAdressDestination;
         }
@@ -377,17 +364,19 @@ app.controller("getRoadtripController", function ($scope, $http, $rootScope, $wi
         if (StopDestination == undefined) {
             StopDestination = $scope.StopDestination;
         }
+        // RESOLVES WHETER TYPED ADRESS OR GOOGLE GEOLOCATION ADRESS I LOADED FOR DESTINATION ADRESS
 
 
+        // GÖR BÄTTRE VALIDATION FÖR ALLA TRE I TRE FORMAT TYP LER NGT
 
-
-        
-        if (RoadtripMilesStart == 0 || RoadtripMilesStop == 0 || StartDestination == null || StopDestination == null || Matter == null || Note == null) {
+        // RESOLVES WHETER ROADTRIP GET ATTRIBUTE OF ONGOING(TRUE) OR FALSE-------------------------
+        if (RoadtripMilesStop == 0 || StopDestination == null || Matter == null) {
             var ongoingRoadtripTrueOrFalse = Boolean(JSON.parse(true));
         }
         else {
             var ongoingRoadtripTrueOrFalse = Boolean(JSON.parse(false));
         }
+        // RESOLVES WHETER ROADTRIP GET ATTRIBUTE OF ONGOING(TRUE) OR FALSE-------------------------
 
 
         var postRoadtripObject = {
@@ -404,30 +393,25 @@ app.controller("getRoadtripController", function ($scope, $http, $rootScope, $wi
             Note: Note
         };
 
-
-       
-        
       
 
-        var postRoadtripUrl = "/api/Roadtrip";
 
+        // DEKLARERAR FALSE VÄRDEN FÖR NG VIEW FÖR ATT SEDAN KUNNA LÄGGA IN DESSA VÄRDEN SOM TRUE I OLIKA SCENARION SOM TILL EXEMPEL SUCCESS
+        // ELLER ERROR PÅ POST. OM VÄRDEN ÄR TRUE KOMMER MEDDELANDEN VISAS PÅ HEMSIDAN VIA NG-SHOW
         $scope.roadtripSuccessfullyCreated = Boolean(JSON.parse(false));
         $scope.roadtripNotCreated = Boolean(JSON.parse(false));
 
 
-    
+            var postRoadtripUrl = "/api/Roadtrip";
             $http.post(postRoadtripUrl, postRoadtripObject, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
-                console.log("postades");
+                //NG-SHOW MEDDELANDE
                 $scope.roadtripSuccessfullyCreated = Boolean(JSON.parse(true));
-                console.log(response);
 
                 // If error --------------------------------------------------------------------------------------------------
             }, function errorCallback(response) {
                 var errors = response.status;
                 console.log(response, "errors: ", errors, "Det finns redan pågående resor och därför returnerar jag ett fel så det inte går att posta.");
-                if (errors = 400) {
-                    
-                }
+                //NG-SHOW MEDDELANDE
                 $scope.roadtripNotCreated = Boolean(JSON.parse(true));
             });
         
@@ -437,45 +421,30 @@ app.controller("getRoadtripController", function ($scope, $http, $rootScope, $wi
 
     }
 
-
-    // Get Vehicles In Dropdown
-    var getVehiclesUrl = "/api/Vehicles/";
-
-    $rootScope.defaultVehicleForDropdown = "";
-
    
+        // Get Vehicles In Dropdown
 
-    $http.get(getVehiclesUrl, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
+        var getVehiclesUrl = "/api/Vehicles/";
+        $http.get(getVehiclesUrl, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
+            // LADDAR VEHICLES I SCOPE VARIABEL OCH ANVÄNDER DEN I EN NG REPEAT I HTML
+            $scope.getAvailableVehicles = response.data.availableVehicles;
 
-        $scope.getAvailableVehicles = response.data.availableVehicles;
 
-        $scope.dropdownText = "bilen";
-        $scope.dropdownText = "Välj bil för din resa";
-
+            // BASICALLY GÅR IGENOM ALLA VEHICLES VI HÄMTAT OCH KOLLAR OM DEN HAR
+            // 'defaultVehicle: true' OCH I SÅ FALL VÄLJER DEN MED FUNKTIONEN NEDAN
 
         angular.forEach($scope.getAvailableVehicles, function (item) {
-
             if (item.defaultVehicle == true) {
+
+                // DETTA ÄR EN FUNKTION SOM ÄR DEKLARERAD NÅGON ANNAN STANS RAD 298
                 $scope.selectCarForRoadtrip(item);
             }
-
         })
-
-
-
-        // If error --------------------------------------------------------------------------------------------------
+         // Error callback på createRoadtripJsAction --------------------------------------------------------------------------------------------------
     }, function errorCallback(response) {
-
-
     });
 
-
-
-    
-   
-
-
-    
+// end of controller 
 });
 
 app.controller("manageVehiclesController", function ($scope, $http, $rootScope, $window, $cookies) {
