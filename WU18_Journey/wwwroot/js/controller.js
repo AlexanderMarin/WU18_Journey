@@ -65,7 +65,7 @@
         var getRoadtripToCompleteByIdUrl = "api/Roadtrip/" + $rootScope.RoadtripId;
         $http.get(getRoadtripToCompleteByIdUrl, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
 
-            //GETTING DATA FROM SELECTED ROADTRIP FROM PÅGÅENDE RESOR FÖR ATT SEDAN VISA DOM PÅ ISDAN completeRoadtrip
+            //GETTING DATA FROM SELECTED ROADTRIP FROM PÅGÅENDE RESOR FÖR ATT SEDAN VISA DOM PÅ SIDAN completeRoadtrip
             $rootScope.ongoingRoadtripToComplete = response.data.ongoingRoadtrip
             $rootScope.roadtripDate = response.data.date;
             $rootScope.roadtripCarMake = response.data.vehicleMake;
@@ -76,19 +76,100 @@
             $rootScope.roadtripMatter = response.data.matter;
             $rootScope.roadtripMilesStart = response.data.roadtripMilesStart;
             $rootScope.roadtripMilesStop = response.data.roadtripMilesStop;
-            //GETTING DATA FROM SELECTED ROADTRIP FROM PÅGÅENDE RESOR FÖR ATT SEDAN VISA DOM PÅ ISDAN completeRoadtrip
+            //GETTING DATA FROM SELECTED ROADTRIP FROM PÅGÅENDE RESOR FÖR ATT SEDAN VISA DOM PÅ SIDAN completeRoadtrip
 
             console.log(response);
             }, function errorCallback(response) {
             });
     };
 
-        $scope.completeRoadtripJsAction = function () {
+    $scope.completeRoadtripJsAction = function () {
 
-        var completeRoadtripMilesStop = $scope.RoadtripMilesStopcomplete;
-        var completeRoadtripStopDestination = $scope.StopDestinationcompleteRoadtrip;
-        var completeRoadtripMatter = $scope.MattercompleteRoadtrip;
-        var completeRoadtripNote = $scope.NotecompleteRoadtrip;
+        // These dont need to be checked, these have to be posted as the are because the will never be changed.
+          //  $rootScope.roadtripDate = response.data.date;
+            //$rootScope.roadtripCarMake = response.data.vehicleMake;
+            //$rootScope.roadtripCarNumberPlate = response.data.vehiclePlateNumber;
+            //$rootScope.roadtripStartDestination = response.data.startDestination;
+            //$rootScope.roadtripMilesStart = response.data.roadtripMilesStart;
+
+        // This resolves itself elsewhere
+    //    $rootScope.ongoingRoadtripToComplete = response.data.ongoingRoadtrip
+
+        // These should be checked if null, if null påst empty, otherwise (if already completed) post whats already completed
+
+
+        
+  
+        console.log($rootScope.roadtripMilesStop);
+
+        // Finished
+        if ($rootScope.roadtripMilesStop == 0 || $rootScope.roadtripMilesStop == undefined) {
+            $rootScope.ccccompleteRoadtripStopDestination = $rootScope.RoadtripMilesStopcomplete;
+        } else {
+            $rootScope.ccccompleteRoadtripStopDestination = $rootScope.roadtripMilesStop;
+
+        }
+
+        console.log($rootScope.RoadtripMilesStopcomplete);
+
+   $rootScope.ccccompleteRoadtripStopDestination 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Finished
+       // $rootScope.roadtripStopDestination = response.data.stopDestination;
+        var completeRoadtripStopDestination = $rootScope.roadtripStopDestination;
+        if ($rootScope.roadtripStopDestination == 0 || $rootScope.roadtripStopDestination == "0" || $rootScope.roadtripStopDestination == null || $rootScope.roadtripStopDestination == undefined || $rootScope.roadtripStopDestination == "undefined") {
+            var completeRoadtripStopDestination = $scope.StopDestinationcompleteRoadtrip;
+        } else if ($scope.StopDestinationcompleteRoadtrip == 0 || $scope.StopDestinationcompleteRoadtrip == "0" || $scope.StopDestinationcompleteRoadtrip == null || $scope.StopDestinationcompleteRoadtrip == undefined || $scope.StopDestinationcompleteRoadtrip == "undefined"){
+            var completeRoadtripStopDestination = $rootScope.roadtripStopDestination;
+
+        }
+        // -----------------
+     
+        
+      //  $rootScope.roadtripMatter = response.data.matter;
+        var completeRoadtripMatter = $rootScope.roadtripMatter;
+
+        // Finished
+        if ($rootScope.roadtripMatter == 0 || $rootScope.roadtripMatter == "0" || $rootScope.roadtripMatter == null || $rootScope.roadtripMatter == undefined || $rootScope.roadtripMatter == "undefined") {
+            var completeRoadtripStopDestination = $rootScope.MattercompleteRoadtrip;
+        } 
+
+       // $rootScope.roadtripNote = response.data.note;
+        var completeRoadtripNote = $rootScope.roadtripNote;
+
+        // Finished
+        if ($rootScope.roadtripNote == 0 || $rootScope.roadtripNote == "0" || $rootScope.roadtripNote == null || $rootScope.roadtripNote == undefined || $rootScope.roadtripNote == "undefined") {
+            var completeRoadtripStopDestination = $scope.NotecompleteRoadtrip;
+        } 
+
+            var roadtripDate = $rootScope.roadtripDate;
+            var carMake = $rootScope.roadtripCarMake;
+            var carNumberPlate = $rootScope.roadtripCarNumberPlate;
+            var roadtripStartDestination = $rootScope.roadtripStartDestination;
+            var roadtripMilesStart = $rootScope.roadtripMilesStart;
+
 
             // FIXA FORM VALIDATION SOM I GET ROADTRIP CONTROLLER OLIKA FORMAT KRÄVS
             if (completeRoadtripStopDestination == null || completeRoadtripMatter == "" || completeRoadtripMilesStop == 0) {
@@ -99,35 +180,39 @@
         }
 
             // GEOLOCATION FOR STOP DESINATION ON COMPLETE ROADTRIP---------------------------
-            if (StopDestinationcompleteRoadtrip == undefined) {
+            if (completeRoadtripStopDestination == undefined) {
                 StopDestination = $rootScope.myAdressDestinationCompleteRoadtrip;
             }
-
-            if (StopDestinationcompleteRoadtrip == "") {
+            if (completeRoadtripStopDestination == "") {
                 StopDestination = $rootScope.myAdressDestinationCompleteRoadtrip
             }
-
-            if (StopDestinationcompleteRoadtrip == undefined) {
+            if (completeRoadtripStopDestination == undefined) {
                 StopDestination = $scope.StopDestinationcompleteRoadtrip;
             }
         // GEOLOCATION FOR STOP DESINATION ON COMPLETE ROADTRIP---------------------------
+            var postRoadtripObjectComplete = {
+                RoadtripId: $rootScope.RoadtripId,
+                Date: roadtripDate,
+                VehiclePlateNumber: carNumberPlate,
+                RoadtripMilesStart: roadtripMilesStart,
+                RoadtripMilesStop: $rootScope.ccccompleteRoadtripStopDestination,
+                StartDestination: roadtripStartDestination,
+                StopDestination: completeRoadtripStopDestination,
+                Matter: completeRoadtripMatter,
+                ongoingRoadtrip: completeOngoingRoadtripTrueOrFalse,
+                Note: completeRoadtripNote,
+                VehicleMake: carMake
 
-
-        var postRoadtripObjectComplete = {
-            RoadtripMilesStop: completeRoadtripMilesStop,
-            RoadtripMilesStop: completeRoadtripStopDestination,
-            Matter: completeRoadtripMatter,
-            ongoingRoadtrip: completeOngoingRoadtripTrueOrFalse,
-            Note: completeRoadtripNote
         };
 
         // DEKLARERAR BOOL FÖR NG-SHOW MEDDELANDE
         $scope.roadtripSuccessfullyCompleted = Boolean(JSON.parse(false));
 
-        var postRoadtripCompleteUrl = "/api/Roadtrip" + $rootScope.RoadtripId;;
+        var postRoadtripCompleteUrl = "/api/Roadtrip/" + $rootScope.RoadtripId;
 
             $http.put(postRoadtripCompleteUrl, postRoadtripObjectComplete, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
-            $scope.roadtripSuccessfullyCompleted = Boolean(JSON.parse(true));
+                $scope.roadtripSuccessfullyCompleted = Boolean(JSON.parse(true));
+                console.log(response);
         }, function errorCallback(response) {
         });
 
@@ -381,7 +466,7 @@ app.controller("getRoadtripController", function ($scope, $http, $rootScope, $wi
             $http.post(postRoadtripUrl, postRoadtripObject, { headers: { 'Authorization': 'Bearer ' + $rootScope.loggedInUser.CookieWithToken } }).then(function successCallback(response) {
                 //NG-SHOW MEDDELANDE
                 $scope.roadtripSuccessfullyCreated = Boolean(JSON.parse(true));
-
+                console.log(response);
                 // If error --------------------------------------------------------------------------------------------------
             }, function errorCallback(response) {
                 var errors = response.status;

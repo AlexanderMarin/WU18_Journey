@@ -96,20 +96,9 @@ namespace WU18_Journey.API
                 return BadRequest(ModelState);
             }
 
-        
 
             _context.Roadtrip.Add(roadtrip);
-
-            //      await _context.SaveChangesAsync();
-
-
-
-
             
-
-            // var user = await _userManager.FindByEmailAsync(email);
-
-
             user.UserRoadtrips.Add(roadtrip);
 
             _context.Entry(user).State = EntityState.Modified;
@@ -220,11 +209,12 @@ namespace WU18_Journey.API
 
             }
            
-            private bool RoadtripExists(int id)
-            {
-                return _context.Roadtrip.Any(e => e.RoadtripId == id);
+           
 
-            }
+        }
+        private bool RoadtripExists(int id)
+        {
+            return _context.Roadtrip.Any(e => e.RoadtripId == id);
 
         }
     }

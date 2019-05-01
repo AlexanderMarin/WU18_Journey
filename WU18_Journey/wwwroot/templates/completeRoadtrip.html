@@ -36,9 +36,10 @@
 
             <div class="form-group">
                 <label for="exampleInputEmail1">Mätarställning ankomst</label>
-                <input ng-if="!roadtripMilesStop" ng-model="RoadtripMilesStopcomplete" type="text" class="form-control" id="exampleInputEmail1" placeholder="Komplettera...">
-                <input ng-if="roadtripMilesStop" type="text" class="form-control" readonly id="exampleInputEmail1" value="{{roadtripMilesStop}}">
+                <input ng-if="!roadtripMilesStop" type="number" ng-model="RoadtripMilesStopcomplete" class="form-control" id="exampleInputEmail1" placeholder="Komplettera...">
+                <input ng-if="roadtripMilesStop"  type="text" class="form-control" readonly id="exampleInputEmail1" value="{{roadtripMilesStop}}">
             </div>
+
 
 
             <br />
@@ -48,16 +49,24 @@
                 <label for="exampleInputEmail1">Startadress</label>
                 <input class="form-control" id="exampleInputEmail1" readonly value="{{roadtripStartDestination}}">
             </div>
+
+
+
             <div class="form-group">
                 <label for="exampleInputPassword1">Destinationsadress</label>
                 <br />
                 {{myAdressDestinationCompleteRoadtrip}}
-                <input ng-if="!roadtripStopDestination" ng-model="StopDestinationcompleteRoadtrip" class="form-control" id="exampleInputPassword1" placeholder="Komplettera...">
 
-                <input ng-if="roadtripStopDestination" class="form-control" readonly id="exampleInputPassword1" value="{{roadtripStopDestination}}">
+                <div ng-if="roadtripStopDestination" >
+                <input class="form-control" readonly id="exampleInputPassword1" value="{{roadtripStopDestination}}">
+                </div>
+
+                
+                <div ng-if="!roadtripStopDestination" >
+                    <input ng-model="StopDestinationcompleteRoadtrip" class="form-control" id="exampleInputPassword1" placeholder="Komplettera...">
+                    <button class="btn btn-info btn-sm" ng-click="findAdressForDestinationComplete()">Hitta automatiskt min adress</button>
+                </div>
             </div>
-
-            <button class="btn btn-info btn-sm" ng-click="findAdressForDestinationComplete()">Hitta automatiskt min adress</button>
 
 
             <br />
@@ -93,8 +102,8 @@
         <br />
 
         <div ng-show="roadtripSuccessfullyCompleted">
-            <div class="alert alert-success" role="alert">
-                <h4 class="alert-heading">Resa är nu tillagd</h4>
+            <div class="alert alert-info" role="alert">
+                <h4 class="alert-heading">Resan är nu <strong>uppdaterad.</strong></h4>
             </div>
         </div>
 
