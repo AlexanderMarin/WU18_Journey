@@ -1,0 +1,31 @@
+[
+  {
+    "outputFileName": "wwwroot/js/JsBundle.js",
+    "inputFiles": [
+      "wwwroot/js/app.js",
+      "wwwroot/js/controller.js",
+      "wwwroot/js/loginAngularAppPreDashboard.js",
+      "wwwroot/js/loginControllerPreDashboard.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/JsBundleDashboard.js",
+    "inputFiles": [
+      "wwwroot/js/controller.js",
+      "wwwroot/js/app.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/JsLoginBundle.js",
+    "inputFiles": [
+      "wwwroot/js/loginAngularAppPreDashboard.js",
+      "wwwroot/js/loginControllerPreDashboard.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/site.min.css",
+    "inputFiles": [
+      "wwwroot/css/site.css"
+    ]
+  }
+]

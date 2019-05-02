@@ -18,7 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="bundleconfig.json" />
+    <Content Remove="wwwroot\js\JsBundle.min.js" />
     <Content Remove="wwwroot\js\manageVehiclesController.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\JsBundle.min.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +40,11 @@
     <Folder Include="Areas\Identity\Services\" />
     <Folder Include="Data\" />
     <Folder Include="wwwroot\pdf\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bundleconfig.json" />
+    <None Include="wwwroot\js\JsBundle.min.js" />
   </ItemGroup>
 
   <ItemGroup>
