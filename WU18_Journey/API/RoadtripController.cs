@@ -91,6 +91,17 @@ namespace WU18_Journey.API
 
             }
 
+            
+
+            //var roadtriptiime = _context.Roadtrip.OrderByDescending(x => x.Date).Take(1).ToList();
+
+
+            //if (roadtrip.RoadtripMilesStart < roadtriptiime.FirstOrDefault().RoadtripMilesStop)
+            //{
+            //    return NotAcceptable();
+            //}
+
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
