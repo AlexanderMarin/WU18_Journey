@@ -100,42 +100,15 @@
 
         
   
-        console.log($rootScope.roadtripMilesStop);
 
         // Finished
         if ($rootScope.roadtripMilesStop == 0 || $rootScope.roadtripMilesStop == undefined) {
-            $rootScope.ccccompleteRoadtripStopDestination = $rootScope.RoadtripMilesStopcomplete;
+            $rootScope.ccccompleteRoadtripStopDestination = $scope._RoadtripMilesStopcomplete;
         } else {
             $rootScope.ccccompleteRoadtripStopDestination = $rootScope.roadtripMilesStop;
 
         }
-
-        console.log($rootScope.RoadtripMilesStopcomplete);
-
-   $rootScope.ccccompleteRoadtripStopDestination 
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
         // Finished
        // $rootScope.roadtripStopDestination = response.data.stopDestination;
         var completeRoadtripStopDestination = $rootScope.roadtripStopDestination;
@@ -148,21 +121,26 @@
         // -----------------
      
         
-      //  $rootScope.roadtripMatter = response.data.matter;
-        var completeRoadtripMatter = $rootScope.roadtripMatter;
+    
+
+        
+        $rootScope.NoteResolvedForPutRoadtrip = $rootScope.roadtripMatter;
 
         // Finished
-        if ($rootScope.roadtripMatter == 0 || $rootScope.roadtripMatter == "0" || $rootScope.roadtripMatter == null || $rootScope.roadtripMatter == undefined || $rootScope.roadtripMatter == "undefined") {
-            var completeRoadtripStopDestination = $rootScope.MattercompleteRoadtrip;
+        if ($rootScope.roadtripMatter == 0 || $rootScope.roadtripMatter == "0" || $rootScope.roadtripMatter == null || $rootScope.roadtripMatter == undefined || $rootScope.roadtripMatter == "undefined" || $rootScope.roadtripMatter == "") {
+            $rootScope.MatterResolvedForPutRoadtrip = $scope._MattercompleteRoadtrip;
         } 
 
-       // $rootScope.roadtripNote = response.data.note;
-        var completeRoadtripNote = $rootScope.roadtripNote;
+
+
+        $rootScope.NoteResolvedForPutRoadtrip = $rootScope.roadtripNote;
 
         // Finished
-        if ($rootScope.roadtripNote == 0 || $rootScope.roadtripNote == "0" || $rootScope.roadtripNote == null || $rootScope.roadtripNote == undefined || $rootScope.roadtripNote == "undefined") {
-            var completeRoadtripStopDestination = $scope.NotecompleteRoadtrip;
+        if ($rootScope.roadtripNote == 0 || $rootScope.roadtripNote == "0" || $rootScope.roadtripNote == null || $rootScope.roadtripNote == undefined || $rootScope.roadtripNote == "undefined" || $rootScope.roadtripNote == "") {
+            $rootScope.NoteResolvedForPutRoadtrip = $scope._NotecompleteRoadtrip;
         } 
+
+
 
             var roadtripDate = $rootScope.roadtripDate;
             var carMake = $rootScope.roadtripCarMake;
@@ -186,7 +164,7 @@
             if (completeRoadtripStopDestination == "") {
                 StopDestination = $rootScope.myAdressDestinationCompleteRoadtrip
             }
-            if (completeRoadtripStopDestination == undefined) {
+        if ($scope.myAdressDestinationCompleteRoadtrip == undefined) {
                 StopDestination = $scope.StopDestinationcompleteRoadtrip;
             }
         // GEOLOCATION FOR STOP DESINATION ON COMPLETE ROADTRIP---------------------------
@@ -198,9 +176,9 @@
                 RoadtripMilesStop: $rootScope.ccccompleteRoadtripStopDestination,
                 StartDestination: roadtripStartDestination,
                 StopDestination: completeRoadtripStopDestination,
-                Matter: completeRoadtripMatter,
+                Matter: $rootScope.MatterResolvedForPutRoadtrip,
                 ongoingRoadtrip: completeOngoingRoadtripTrueOrFalse,
-                Note: completeRoadtripNote,
+                Note: $rootScope.NoteResolvedForPutRoadtrip,
                 VehicleMake: carMake
 
         };
