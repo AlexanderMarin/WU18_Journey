@@ -100,7 +100,7 @@
 
         
   
-
+        $rootScope.ccccompleteRoadtripStopDestination = $rootScope.roadtripMilesStop;
         // Finished
         if ($rootScope.roadtripMilesStop == 0 || $rootScope.roadtripMilesStop == undefined) {
             $rootScope.ccccompleteRoadtripStopDestination = $scope._RoadtripMilesStopcomplete;
@@ -111,15 +111,14 @@
         
         // Finished
        // $rootScope.roadtripStopDestination = response.data.stopDestination;
-        var completeRoadtripStopDestination = $rootScope.roadtripStopDestination;
+        $rootScope.StopDestinationResolvedForPut = $rootScope.roadtripStopDestination;
         if ($rootScope.roadtripStopDestination == 0 || $rootScope.roadtripStopDestination == "0" || $rootScope.roadtripStopDestination == null || $rootScope.roadtripStopDestination == undefined || $rootScope.roadtripStopDestination == "undefined") {
-            var completeRoadtripStopDestination = $scope.StopDestinationcompleteRoadtrip;
-        } else if ($scope.StopDestinationcompleteRoadtrip == 0 || $scope.StopDestinationcompleteRoadtrip == "0" || $scope.StopDestinationcompleteRoadtrip == null || $scope.StopDestinationcompleteRoadtrip == undefined || $scope.StopDestinationcompleteRoadtrip == "undefined"){
-            var completeRoadtripStopDestination = $rootScope.roadtripStopDestination;
+            $rootScope.StopDestinationResolvedForPut = $scope.StopDestinationcompleteRoadtrip;
+        } else if ($scope.StopDestinationcompleteRoadtrip == 0 || $scope.StopDestinationcompleteRoadtrip == "0" || $scope.StopDestinationcompleteRoadtrip == null || $scope.StopDestinationcompleteRoadtrip == undefined || $scope.StopDestinationcompleteRoadtrip == "undefined") {
+            $rootScope.StopDestinationResolvedForPut = $rootScope.myAdressDestinationCompleteRoadtrip;
 
-        }
-        // -----------------
-     
+        } 
+        
         
     
 
@@ -129,8 +128,11 @@
         // Finished
         if ($rootScope.roadtripMatter == 0 || $rootScope.roadtripMatter == "0" || $rootScope.roadtripMatter == null || $rootScope.roadtripMatter == undefined || $rootScope.roadtripMatter == "undefined" || $rootScope.roadtripMatter == "") {
             $rootScope.MatterResolvedForPutRoadtrip = $scope._MattercompleteRoadtrip;
-        } 
-
+        }
+        else if ($scope._MattercompleteRoadtrip == 0 || $scope._MattercompleteRoadtrip == "0" || $scope._MattercompleteRoadtrip == null || $scope._MattercompleteRoadtrip == undefined || $scope._MattercompleteRoadtrip == "undefined" || $scope._MattercompleteRoadtrip == "")
+        {
+            $rootScope.NoteResolvedForPutRoadtrip = $rootScope.roadtripMatter;
+        }
 
 
         $rootScope.NoteResolvedForPutRoadtrip = $rootScope.roadtripNote;
@@ -150,7 +152,7 @@
 
 
             // FIXA FORM VALIDATION SOM I GET ROADTRIP CONTROLLER OLIKA FORMAT KRÄVS
-            if (completeRoadtripStopDestination == null || completeRoadtripMatter == "" || completeRoadtripMilesStop == 0) {
+        if ($rootScope.StopDestinationResolvedForPut == null || $rootScope.MatterResolvedForPutRoadtrip == undefined || $rootScope.ccccompleteRoadtripStopDestination == undefined) {
             var completeOngoingRoadtripTrueOrFalse = Boolean(JSON.parse(true));
         }
         else {
@@ -158,13 +160,13 @@
         }
 
             // GEOLOCATION FOR STOP DESINATION ON COMPLETE ROADTRIP---------------------------
-            if (completeRoadtripStopDestination == undefined) {
+        if ($rootScope.StopDestinationResolvedForPut == undefined) {
                 StopDestination = $rootScope.myAdressDestinationCompleteRoadtrip;
             }
-            if (completeRoadtripStopDestination == "") {
+        if ($rootScope.StopDestinationResolvedForPut == "") {
                 StopDestination = $rootScope.myAdressDestinationCompleteRoadtrip
             }
-        if ($scope.myAdressDestinationCompleteRoadtrip == undefined) {
+        if ($rootScope.myAdressDestinationCompleteRoadtrip == undefined) {
                 StopDestination = $scope.StopDestinationcompleteRoadtrip;
             }
         // GEOLOCATION FOR STOP DESINATION ON COMPLETE ROADTRIP---------------------------
@@ -175,7 +177,7 @@
                 RoadtripMilesStart: roadtripMilesStart,
                 RoadtripMilesStop: $rootScope.ccccompleteRoadtripStopDestination,
                 StartDestination: roadtripStartDestination,
-                StopDestination: completeRoadtripStopDestination,
+                StopDestination: $rootScope.StopDestinationResolvedForPut,
                 Matter: $rootScope.MatterResolvedForPutRoadtrip,
                 ongoingRoadtrip: completeOngoingRoadtripTrueOrFalse,
                 Note: $rootScope.NoteResolvedForPutRoadtrip,
